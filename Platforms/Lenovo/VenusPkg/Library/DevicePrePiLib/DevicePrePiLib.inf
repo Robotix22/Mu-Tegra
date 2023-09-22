@@ -1,0 +1,18 @@
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = DevicePrePiLib
+  FILE_GUID                      = 1C222C96-4F15-44FA-B233-AFA9853815E7
+  MODULE_TYPE                    = SEC
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = DevicePrePiLib
+
+[Sources]
+  DeviceUtils.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  NvidiaPkg/NvidiaPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  IoLib

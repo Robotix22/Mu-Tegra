@@ -1,0 +1,5 @@
+Build/
+Conf/
+Mu-*.elf
+UEFILoader.efi
+Platforms/Lenovo/VenusPkg/__pycache__/
