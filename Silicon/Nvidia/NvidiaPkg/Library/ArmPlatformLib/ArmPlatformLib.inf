@@ -27,7 +27,6 @@
   MemoryMapHelperLib
   PlatformMemoryMapLib
   PlatformPrePiLib
-  DevicePrePiLib
 
 [Sources.common]
   ArmPlatformLib.c

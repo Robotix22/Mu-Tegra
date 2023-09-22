@@ -7,7 +7,6 @@
 
 #include <Library/MemoryMapHelperLib.h>
 #include <Library/PlatformPrePiLib.h>
-#include <Library/DevicePrePiLib.h>
 
 #include "InitializationUtils.h"
 
@@ -41,12 +40,9 @@ VOID UartInit(VOID)
 
 VOID EarlyInitialization(VOID)
 {
-  // Do platform specific initialization here
-  PlatformInitialize();
-
-  // Do Device specific initialization here
-  DeviceInitialize();
-
   // Initialize UART Serial
   UartInit();
+
+  // Do platform specific initialization here
+  PlatformInitialize();
 }

@@ -36,7 +36,6 @@
 
 [LibraryClasses.common]
   PlatformMemoryMapLib|VenusPkg/Library/PlatformMemoryMapLib/PlatformMemoryMapLib.inf
-  DevicePrePiLib|VenusPkg/Library/DevicePrePiLib/DevicePrePiLib.inf
 
 [PcdsFixedAtBuild.common]
   # Platform-specific
