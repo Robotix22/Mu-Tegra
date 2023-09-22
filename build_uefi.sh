@@ -57,7 +57,7 @@ fi
 
 # Delete Output Files if present
 rm Mu-${TARGET_DEVICE}.elf &> /dev/null
-rm UEFILoader.efi
+rm UEFILoader.efi &> /dev/null
 
 # Setup and Update UEFI workspace
 stuart_setup -c "Platforms/${TARGET_DEVICE_VENDOR}/${TARGET_DEVICE}Pkg/PlatformBuild.py" TOOL_CHAIN_TAG=CLANG38||_error "\nFailed to Setup UEFI Env!\n"
