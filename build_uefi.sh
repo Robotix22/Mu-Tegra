@@ -85,8 +85,8 @@ if [[ ${STATUS} != "STABLE" ]]; then
 	fi
 fi
 
-#git fetch &> /dev/null
-#UPDATE_CHECK=$(git status)
-#if [[ ${UPDATE_CHECK} == *"git pull"* ]];
-#then _warn "\nYou are using an old Version Mu-Tegra.\nThis Payload may be unstable.\n"
-#fi
+git fetch &> /dev/null
+UPDATE_CHECK=$(git status)
+if [[ ${UPDATE_CHECK} == *"git pull"* ]];
+then _warn "\nYou are using an old Version Mu-Tegra.\nThis Payload may be unstable.\n"
+fi
