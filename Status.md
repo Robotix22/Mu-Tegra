@@ -11,7 +11,7 @@
 
 **NOTE: Stuck in PrePi Assembly Phase.**
 
-<img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/IdeaPad-Yoga-11.png" width="500" alt="Preview">
+<img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Lenovo-IdeaPad-Yoga-11.png" width="500" alt="Preview">
 
 **SoC: Tegra 3** <br />
 **Codename: Venus** <br />
@@ -29,8 +29,8 @@
 |eMMC||❌|
 |Buttons||❌|
 |USB||❌|
-|Mouse Pad|❌|
-|Keyboard|❌|
+|Mouse Pad||❌|
+|Keyboard||❌|
 |SD Card||❌|
 |ACPI||❌|
 |UART||❌|
@@ -55,8 +55,8 @@
 |Touchscreen||❌|
 |Bluetooth||❌|
 |Audio||❌|
-|Mouse Pad|❌|
-|Keyboard|❌|
+|Mouse Pad||❌|
+|Keyboard||❌|
 |GPU||❌|
 |Display||❌|
 |UART||❌|
@@ -77,8 +77,8 @@
 |Touchscreen||❌|
 |Bluetooth||❌|
 |Audio||❌|
-|Mouse Pad|❌|
-|Keyboard|❌|
+|Mouse Pad||❌|
+|Keyboard||❌|
 |GPU||❌|
 |Display||❌|
 |UART||❌|
