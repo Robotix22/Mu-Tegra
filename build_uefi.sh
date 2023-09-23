@@ -2,7 +2,7 @@
 
 # Function to display Help Message
 function _help(){
-	echo "Usage: ./build_uefi.sh -d <Codename> -bm <Boot Method> [-r <Build Mode>]"
+	echo "Usage: ./build_uefi.sh -d <Codename> -b <Boot Method> [-r <Build Mode>]"
 	echo
 	echo "Build Project Mu UEFI for Nvidia Tegra Platforms."
 	echo
