@@ -546,6 +546,7 @@
   NvidiaPkg/Drivers/SecureBootProvisioningDxe/SecureBootProvisioningDxe.inf
   NvidiaPkg/Drivers/SystemIntegrityPolicyProvisioningDxe/SystemIntegrityPolicyProvisioningDxe.inf
 
+!if $(BOOT_METHOD) == Chainload
   # UEFI Chainloader (BootShim)
   NvidiaPkg/Applications/UEFILoader/UEFILoader.inf {
     <LibraryClasses>
@@ -555,6 +556,7 @@
       SerialPortLib|MdePkg/Library/BaseSerialPortLibNull/BaseSerialPortLibNull.inf
   !endif
   }
+!endif
 
   # ACPI
   # We use pre-built ACPI tables, so only core components are loaded

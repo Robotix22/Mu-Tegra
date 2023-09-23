@@ -213,6 +213,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         self.env.SetValue("BLD_*_FD_BASE", self.env.GetValue("FD_BASE"), "Default")
         self.env.SetValue("BLD_*_FD_SIZE", self.env.GetValue("FD_SIZE"), "Default")
         self.env.SetValue("BLD_*_FD_BLOCKS", self.env.GetValue("FD_BLOCKS"), "Default")
+        self.env.SetValue("BLD_*_BOOT_METHOD", self.env.GetValue("BOOT_METHOD"), "Default")
         return 0
 
     def PlatformPreBuild(self):
