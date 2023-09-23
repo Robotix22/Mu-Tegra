@@ -21,6 +21,10 @@
 
 ### UEFI Status
 
+<table>
+<tr><th>Chainload</th><th>Payload</th></tr>
+<tr><td>
+
 |Feature|Description|State|
 |:------|:----------|:---:|
 |Display||✅|
@@ -34,6 +38,24 @@
 |SD Card||❌|
 |ACPI||❌|
 |UART||❌|
+
+</td><td>
+
+|Feature|Description|State|
+|:------|:----------|:---:|
+|Display||❌|
+|Touchscreen||❌|
+|Clocks||❌|
+|eMMC||❌|
+|Buttons||❌|
+|USB||❌|
+|Mouse Pad||❌|
+|Keyboard||❌|
+|SD Card||❌|
+|ACPI||❌|
+|UART||❌|
+
+</td></tr> </table>
 
 ### OS Status
 
