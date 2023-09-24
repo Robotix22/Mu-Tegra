@@ -8,6 +8,7 @@
 
 #include "UEFILoader.h"
 
+#ifdef FIX_CONSOLE_OUTPUT
 VOID
 ConsoleOutputFixup(VOID)
 {
@@ -33,3 +34,4 @@ ConsoleOutputFixup(VOID)
     DEBUG ((EFI_D_ERROR, "Failed to Locate Simple Text Out Handle!\n"));
   }
 }
+#endif

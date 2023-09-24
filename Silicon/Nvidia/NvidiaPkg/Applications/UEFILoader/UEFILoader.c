@@ -1,5 +1,4 @@
-#include <Uefi.h>
-
+#include <Library/ArmLib.h>
 #include <Library/EFIELF.h>
 #include <Library/UefiLib.h>
 #include <Library/DebugLib.h>
@@ -34,6 +33,8 @@ ExecuteUEFIPayload(
   UINTN                  MapKey         = 0;
   UINTN                  DesSize        = 0;
 
+  Print(L"Executing UEFI Payload...\n");
+
   // Set Entry Function
   VOID(*entry)() = (VOID*) PayloadAddress;
 
@@ -43,25 +44,28 @@ ExecuteUEFIPayload(
   // Exit Boot Services
   Status = gBS->ExitBootServices(ImageHandle, MapKey);
   if (EFI_ERROR (Status)) {
-    Print(L"Failed to Exit Boot Services!\n");
-    goto exit;
+    Print(L"Failed to Exit Boot Services! Status = %r\n", Status);
+    UEFILoaderFinish();
   }
 
   // Move LOAD Section to actual Location
   SetMem((VOID*)PayloadAddress, PayloadLength, 0xFF);
   CopyMem((VOID*)PayloadAddress, PayloadFileBuffer, PayloadLength);
 
+  // De-Init Platform
+  ArmDisableBranchPrediction();
+  ArmDisableFiq();
+  ArmDisableInterrupts();
+  ArmDisableDataCache();
+  ArmInvalidateInstructionCache();
+  ArmDisableCachesAndMmu();
+  ArmInvalidateTlb();
+
   // Disable Gic
   MmioWrite32(0, FixedPcdGet32(PcdGicDistributorBase));
 
   // Execute UEFI Payload
   entry();
-
-exit:
-  Print(L"Reset your Device Manually!\n");
-
-  // Do CPU Dead Loop
-  CpuDeadLoop();
 }
 
 STATIC
@@ -103,7 +107,7 @@ ValiadeELFFile(VOID)
   ELFEntryPoint = bl_elf_hdr->e_entry;
   Status = gBS->AllocatePages(AllocateAddress, EfiLoaderCode, 1, &ELFEntryPoint);
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_WARN, "[DEBUG] %a: Invalid Entry Point!\n", __FUNCTION__));
+    DEBUG((EFI_D_WARN, "[DEBUG] %a: Invalid Entry Point! Status = %r\n", __FUNCTION__, Status));
     ValidELFFile = FALSE;
     return;
   } else {
@@ -129,7 +133,7 @@ ValiadeELFFile(VOID)
 }
 
 EFI_STATUS
-LoadElfFile(VOID)
+LoadElfFile()
 {
   EFI_STATUS                       Status                     = EFI_SUCCESS;
   EFI_HANDLE                      *SfsHandles                 = NULL;
@@ -142,7 +146,7 @@ LoadElfFile(VOID)
   // Locate Handle Buffer of SFS
   Status = gBS->LocateHandleBuffer(ByProtocol, &gEfiSimpleFileSystemProtocolGuid, NULL, &NumHandles, &SfsHandles);
   if (EFI_ERROR (Status)) {
-    DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to get Loaded Image Handle Protocol!\n", __FUNCTION__));
+    DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to get Loaded Image Handle Protocol! Status = %r\n", __FUNCTION__, Status));
     goto exit;
   } else {
     DEBUG((EFI_D_WARN, "[DEBUG] %a: Successfully Located SFS Handle\n", __FUNCTION__));
@@ -150,9 +154,9 @@ LoadElfFile(VOID)
 
   for (UINTN index = 0; index < NumHandles; index++) {
     // Invoke SFS Handle Protocol
-    Status = gBS->HandleProtocol(SfsHandles[index], &gEfiSimpleFileSystemProtocolGuid, (VOID**) &EfiSfsProtocol);
+    Status = gBS->HandleProtocol(SfsHandles[index], &gEfiSimpleFileSystemProtocolGuid, (VOID **) &EfiSfsProtocol);
     if (EFI_ERROR (Status)) {
-      DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to get SFS Handle Protocol!\n", __FUNCTION__));
+      DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to get SFS Handle Protocol! Status = %r\n", __FUNCTION__, Status));
     } else {
       DEBUG((EFI_D_WARN, "[DEBUG] %a: Successfully Located SFS Handle Protocol.\n", __FUNCTION__));
     }
@@ -160,7 +164,7 @@ LoadElfFile(VOID)
     // Get File Protocol Handle
     Status = EfiSfsProtocol->OpenVolume(EfiSfsProtocol, &FileProtocol);
     if (EFI_ERROR (Status)) {
-      DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to Open Currect Volume!\n", __FUNCTION__));
+      DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to Open Currect Volume! Status = %r\n", __FUNCTION__, Status));
     } else {
       DEBUG((EFI_D_WARN, "[DEBUG] %a: Successfully Opend the current Volume.\n", __FUNCTION__));
     }
@@ -168,7 +172,7 @@ LoadElfFile(VOID)
     // Open the UEFI Payload File
     Status = FileProtocol->Open(FileProtocol, &PayloadFileProtocol, PayloadFileName, EFI_FILE_MODE_READ, EFI_FILE_READ_ONLY | EFI_FILE_HIDDEN | EFI_FILE_SYSTEM);
     if (EFI_ERROR (Status)) {
-      DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to Open UEFI Payload File!\n", __FUNCTION__));
+      DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to Open UEFI Payload File! Status = %r\n", __FUNCTION__, Status));
       continue;
     } else {
       DEBUG((EFI_D_WARN, "[DEBUG] %a: Successfully Opend UEFI Payload File.\n", __FUNCTION__));
@@ -180,8 +184,8 @@ LoadElfFile(VOID)
       // Allocate Memory
       Status = gBS->AllocatePool(EfiLoaderData, PayloadFileInformationSize, (VOID **)&PayloadFileInformation);
       if (EFI_ERROR (Status)) {
-        DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to Allocate Memory!\n", __FUNCTION__));
-        goto local_cleanup;
+        DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to Allocate Memory! Status = %r\n", __FUNCTION__, Status));
+        goto exit;
       } else {
         DEBUG((EFI_D_WARN, "[DEBUG] %a: Successfully Allocated Memory.\n", __FUNCTION__));
       }
@@ -191,14 +195,14 @@ LoadElfFile(VOID)
       // Get File Infos from UEFI Payload Again
       Status = PayloadFileProtocol->GetInfo(PayloadFileProtocol, &gEfiFileInfoGuid, &PayloadFileInformationSize, (VOID *)PayloadFileInformation);
       if (EFI_ERROR (Status)) {
-        DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to Get UEFI Payload File Info!\n", __FUNCTION__));
-        goto local_cleanup;
+        DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to Get UEFI Payload File Info! Status = %r\n", __FUNCTION__, Status));
+        goto exit;
       } else {
         DEBUG((EFI_D_WARN, "[DEBUG] %a: Successfully Recived Payload Information.\n", __FUNCTION__));
       }
     } else if (EFI_ERROR (Status)) {
-      DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to Get UEFI Payload File Info!\n", __FUNCTION__));
-      goto local_cleanup;
+      DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to Get UEFI Payload File Info! Status = %r\n", __FUNCTION__, Status));
+      goto exit;
     } else {
       DEBUG((EFI_D_WARN, "[DEBUG] %a: Successfully Recived Payload Information.\n", __FUNCTION__));
     }
@@ -206,7 +210,8 @@ LoadElfFile(VOID)
     // Check if UEFI Payload isn't to large
     if (PayloadFileInformation->FileSize > 0xFFFFFFFF) {
       Print (L"UEFI Payload File is to Large!\n");
-      goto local_cleanup_free_info;
+      Status = EFI_OUT_OF_RESOURCES;
+      goto exit;
     }
 
     PayloadFileBufferSize = (UINTN) PayloadFileInformation->FileSize;
@@ -214,8 +219,8 @@ LoadElfFile(VOID)
     // Allocate more Memory
     Status = gBS->AllocatePool(EfiLoaderData, PayloadFileBufferSize, &PayloadFileBuffer);
     if (EFI_ERROR (Status)) {
-      DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to allocate more Memory!\n", __FUNCTION__));
-      goto local_cleanup_free_info;
+      DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to allocate more Memory! Status = %r\n", __FUNCTION__, Status));
+      goto exit;
     } else {
       DEBUG((EFI_D_WARN, "[DEBUG] %a: Successfully Allocated Memory.\n", __FUNCTION__));
     }
@@ -225,43 +230,37 @@ LoadElfFile(VOID)
     // Read UEFI Payload into Memory
     Status = PayloadFileProtocol->Read(PayloadFileProtocol, &PayloadFileBufferSize, PayloadFileBuffer);
     if (EFI_ERROR (Status)) {
-      DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to Read UEFI Payload into Memory!\n", __FUNCTION__));
-      goto local_cleanup_file_pool;
+      DEBUG((EFI_D_ERROR, "[DEBUG] %a: Failed to Read UEFI Payload into Memory! Status = %r\n", __FUNCTION__, Status));
+      goto exit;
     } else {
       DEBUG((EFI_D_WARN, "[DEBUG] %a: Successfully Read UEFI Payload into Memory.\n", __FUNCTION__));
     }
   }
 
+  // If the UEFI Payload was not Found exit
+  if (EFI_ERROR (Status)) {
+    Print(L"No UEFI Payload Found!\n");
+    goto exit;
+  }
+
   // Check if ELF File is Valid
   ValiadeELFFile();
   if (ValidELFFile == FALSE) {
-    Print (L"The UEFI Payload Entry is Invaild!\n");
-    goto local_cleanup_file_pool;
+    Print(L"The UEFI Payload Entry is Invaild!\n");
+    Status = EFI_UNSUPPORTED;
+    goto exit;
   }
 
   // Print UEFI Payload File Infos
   Print(L"UEFI Payload in Memory at: 0x%x\n", PayloadFileBuffer);
   Print(L"UEFI Payload Size: 0x%x\n", PayloadFileBufferSize);
-  goto exit;
-
-local_cleanup_file_pool:
-  gBS->FreePool(PayloadFileBuffer);
-
-local_cleanup_free_info:
-  gBS->FreePool((VOID *)PayloadFileInformation);
-
-local_cleanup:
-  Status = PayloadFileProtocol->Close(PayloadFileProtocol);
-  if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_ERROR, "Failed to Close Payload File Protocol!\n"));
-  }
 
 exit:
   return Status;
 }
 
 EFI_STATUS
-PrepareElfFile(VOID)
+PrepareElfFile()
 {
   EFI_STATUS           Status               = EFI_SUCCESS;
   elf32_ehdr          *bl_elf_hdr           = PayloadFileBuffer;
@@ -269,10 +268,6 @@ PrepareElfFile(VOID)
   UINT64               PayloadSectionOffset = 0;
 
   UEFIPayloadEntryPoint = bl_elf_hdr->e_entry;
-
-  // Check if Previors Functions Failed
-  if (ValidELFFile == FALSE) { return EFI_SUCCESS; }
-  if (PayloadFileBuffer == NULL) { return EFI_SUCCESS; }
 
   // Determine LOAD section
   for (UINTN ph_idx = 0; ph_idx < bl_elf_hdr->e_phnum; ph_idx++) {
@@ -315,32 +310,23 @@ PrepareElfFile(VOID)
   // Check if Payload is invalid
   if (PayloadSectionOffset == 0 || UEFIPayloadLength == 0) {
     Print(L"UEFI Payload has no Suitable LOAD Section!\n");
-    goto cleanup;
+    Status = EFI_UNSUPPORTED;
+    goto exit;
   }
-
-  // Print Payload Infos
-  Print(L"UEFI Payload Entry Point = 0x%llx\n", UEFIPayloadEntryPoint);
-  Print(L"UEFI Payload Offset = 0x%llx\n", PayloadSectionOffset);
-  Print(L"UEFI Payload Length = 0x%llx\n", UEFIPayloadLength);
 
   // Check if Entry Point isn't located to hight
   if (UEFIPayloadEntryPoint > 0xFFFFFFFF) {
     Print(L"UEFI Payload Entry Point is Located too High!\n");
-    goto cleanup;
+    Status = EFI_UNSUPPORTED;
+    goto exit;
   } else {
     DEBUG((EFI_D_WARN, "[DEBUG] %a: UEFI Payload Entry isn't located to high.\n", __FUNCTION__));
   }
 
-  goto exit;
-
-cleanup:
-  gBS->FreePool(PayloadFileBuffer);
-  gBS->FreePool((VOID *)PayloadFileInformation);
-
-  Status = PayloadFileProtocol->Close(PayloadFileProtocol);
-  if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_ERROR, "Failed to Close Payload File Protocol!\n"));
-  }
+  // Print Payload Infos
+  Print(L"UEFI Payload Entry Point = 0x%x\n", UEFIPayloadEntryPoint);
+  Print(L"UEFI Payload Offset = 0x%x\n", PayloadSectionOffset);
+  Print(L"UEFI Payload Length = 0x%x\n", UEFIPayloadLength);
 
 exit:
   return Status;
@@ -352,19 +338,45 @@ LoadMain(
   IN EFI_HANDLE        ImageHandle,
   IN EFI_SYSTEM_TABLE *SystemTable)
 {
+  EFI_STATUS Status = EFI_SUCCESS;
+
 #ifdef FIX_CONSOLE_OUTPUT
   // Fix Console Output
   ConsoleOutputFixup();
 #endif
 
+#ifdef TEGRA30_TRUSTZONE_EXPLOIT
+  // Exploit TrustZone
+  Status = SecureWorldExploit();
+  if (EFI_ERROR (Status)) {
+    Print(L"Secure World Exploit Failed! Status = %r\n", Status);
+    UEFILoaderFinish();
+  }
+#endif
+
   // Load ELF File into Memory
-  LoadElfFile();
+  Status = LoadElfFile();
+  if (EFI_ERROR (Status)) {
+    Print(L"Failed to put UEFI Payload into Memory! Status = %r\n", Status);
+    UEFILoaderFinish();
+  }
 
   // Prepare ELF File for Memory Boot
-  PrepareElfFile();
+  Status = PrepareElfFile();
+  if (EFI_ERROR (Status)) {
+    Print(L"Failed to Prepare UEFI Payload for Boot! Status = %r\n", Status);
+    UEFILoaderFinish();
+  }
 
   // Jump to UEFI Payload
   ExecuteUEFIPayload(ImageHandle);
 
-  return EFI_SUCCESS;
+  return Status;
+}
+
+VOID
+UEFILoaderFinish(VOID)
+{
+  Print(L"Reset your Device Manually!\n");
+  CpuDeadLoop();
 }

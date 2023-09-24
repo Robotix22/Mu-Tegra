@@ -32,7 +32,7 @@
   SOC_TYPE                       = 0
 
 [BuildOptions.common]
-  *_*_*_CC_FLAGS = -DSOC_TYPE=$(SOC_TYPE) -DBOOT_METHOD=$(BOOT_METHOD)
+  *_*_*_CC_FLAGS = -DSOC_TYPE=$(SOC_TYPE) -DBOOT_METHOD=$(BOOT_METHOD) -DTEGRA30_TRUSTZONE_EXPLOIT
 
 [LibraryClasses.common]
   PlatformMemoryMapLib|VenusPkg/Library/PlatformMemoryMapLib/PlatformMemoryMapLib.inf

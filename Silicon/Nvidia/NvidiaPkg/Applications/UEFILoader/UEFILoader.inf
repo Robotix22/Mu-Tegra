@@ -9,6 +9,7 @@
 [Sources]
   UEFILoader.c
   Console.c
+  Exploit.c
 
 [Packages]
   ArmPkg/ArmPkg.dec
@@ -17,6 +18,8 @@
   
 [LibraryClasses]
   IoLib
+  ArmLib
+  ArmSmcLib
   UefiApplicationEntryPoint
   UefiBootServicesTableLib
   UefiLib
