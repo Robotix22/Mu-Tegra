@@ -1,4 +1,4 @@
-// Taken from https://github.com/NekomimiRouter/yahallo/blob/main/TegraFirmwareDump/Console.c
+// Taken from: https://github.com/NekomimiRouter/yahallo/blob/main/TegraFirmwareDump/Console.c
 #include <Uefi.h>
 
 #include <Library/UefiLib.h>
