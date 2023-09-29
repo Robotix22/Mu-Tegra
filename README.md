@@ -8,7 +8,7 @@ This repo brings UEFI Firmware on your Device (If supported) to boot OSs like Wi
 
 ## Resources
 
-[Discord Server](https://discord.gg/Dx2QgMx7Sv)
+[Discord Server](https://discord.gg/Dx2QgMx7Sv) <br />
 [OpenRT Discord](https://discord.gg/tAxvvVC)
 
 ## [Status](https://github.com/Robotix22/Mu-Tegra/blob/main/Status.md)
@@ -19,7 +19,7 @@ This repo brings UEFI Firmware on your Device (If supported) to boot OSs like Wi
 
 ## Credits
 
-Thanks to [Gustave Monce](https://github.com/gus33000) for his [SurfaceDuoPkg](https://github.com/WOA-Project/SurfaceDuoPkg), without it this repo would probally not exist.
+Thanks to [Gustave Monce](https://github.com/gus33000) for his [SurfaceDuoPkg](https://github.com/WOA-Project/SurfaceDuoPkg), without it this repo would probally not exist. <br />
 Many Thanks to the [OpenRT Comunity](https://openrt.gitbook.io/open-surfacert/) for some Tegra Specific Code and for Explaining many Things.
 
 ## License
