@@ -33,6 +33,18 @@ ASM_FUNC(_ModuleEntryPoint)
   bl ASM_PFX(ArmReadMpidr)
   mov r8, r0
 
+  /* First ensure all interrupts are disabled */
+  bl ASM_PFX(ArmDisableInterrupts)
+
+  /* Ensure that the MMU and caches are off */
+  bl ASM_PFX(ArmDisableCachesAndMmu)
+
+  /* Invalide I-Cache */
+  bl ASM_PFX(ArmInvalidateInstructionCache)
+
+  /* Invalidate TLB */
+  bl ASM_PFX(ArmInvalidateTlb)
+
 _SetupExceptionVector:
   LoadConstantToReg (FixedPcdGet32(PcdCpuVectorBaseAddress), r0)
   ldr r1, _NeverReturn
@@ -52,7 +64,7 @@ _SetupPrimaryCoreStack:
   add sp, r4, #0
 
 _EnableCache:
-  /* bl ArmInvalidateDataCache */
+  bl ArmInvalidateDataCache
   bl ASM_PFX(ArmEnableInstructionCache)
   bl ASM_PFX(ArmEnableDataCache)
 

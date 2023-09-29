@@ -226,8 +226,13 @@
   # Application that presents & manages the Boot Menu Setup on Front Page.
   #
   OemPkg/BootMenu/BootMenu.inf
-  MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
   PcBdsPkg/MsBootPolicy/MsBootPolicy.inf
+  MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
+
+  #
+  # Library to support Remote/IT/Admin Settings such as DFCI
+  #
+  #MdeModulePkg/Universal/RegularExpressionDxe/RegularExpressionDxe.inf
 
   #
   # Main component of DFCI. Manages and enforces all DFCI settings.
@@ -289,6 +294,7 @@
   #
   # Produces FORM DISPLAY ENGINE protocol. Handles input, displays strings.
   #
+  #MsGraphicsPkg/DisplayEngineDxe/DisplayEngineDxe.inf
   MsGraphicsPkg/MsEarlyGraphics/Dxe/MsEarlyGraphics.inf
 
   MsWheaPkg/HwErrBert/HwErrBert.inf
@@ -298,3 +304,5 @@
   MsWheaPkg/HwhMenu/HwhMenu.inf
 
   MsCorePkg/AcpiRGRT/AcpiRgrt.inf
+
+  #DfciPkg/Application/DfciMenu/DfciMenu.inf

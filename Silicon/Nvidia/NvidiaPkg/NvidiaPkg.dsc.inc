@@ -10,7 +10,8 @@
 ##
 
 [BuildOptions.common]
-  *_CLANG38_*_CC_FLAGS = -Wno-unused-const-variable -Wno-sometimes-uninitialized -Wno-unaligned-access -Wno-deprecated-non-prototype -D CLANG -fno-asynchronous-unwind-tables
+  *_CLANG38_*_CC_FLAGS = -Wno-unused-const-variable -Wno-sometimes-uninitialized -Wno-unaligned-access -Wno-deprecated-non-prototype -D CLANG
+  *_CLANG38_ARM_CC_FLAGS = -fno-asynchronous-unwind-tables
 
 [BuildOptions.common.EDKII.DXE_CORE,BuildOptions.common.EDKII.DXE_DRIVER,BuildOptions.common.EDKII.UEFI_DRIVER,BuildOptions.common.EDKII.UEFI_APPLICATION]
   *_*_*_DLINK_FLAGS = -z common-page-size=0x1000
@@ -59,7 +60,7 @@
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
 
-  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|16
+  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|44
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIReclaimMemory|0
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIMemoryNVS|0
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiReservedMemoryType|0
@@ -105,7 +106,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdBootManagerMenuFile|{ 0x8A, 0x70, 0x42, 0x40, 0x2D, 0x0F, 0x23, 0x48, 0xAC, 0x60, 0x0D, 0x77, 0xB3, 0x11, 0x18, 0x89 }
 
   gOemPkgTokenSpaceGuid.PcdUefiVersionNumber|0x0000010
-  gOemPkgTokenSpaceGuid.PcdUefiBuildDate|0x20230920
+  gOemPkgTokenSpaceGuid.PcdUefiBuildDate|0x20230929
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x2000
 
@@ -282,6 +283,7 @@
   ResetSystemLib|ArmPkg/Library/ArmSmcPsciResetSystemLib/ArmSmcPsciResetSystemLib.inf
 
   # UI and graphics
+  #FrameBufferMemDrawLib|MsGraphicsPkg/Library/FrameBufferMemDrawLib/FrameBufferMemDrawLib.inf
   FrameBufferMemDrawLib|MsGraphicsPkg/Library/FrameBufferMemDrawLibNull/FrameBufferMemDrawLibNull.inf
 
   # DFCI / XML / JSON Libraries
@@ -545,18 +547,6 @@
   NvidiaPkg/Drivers/GpioButtons/GpioButtons.inf
   NvidiaPkg/Drivers/SecureBootProvisioningDxe/SecureBootProvisioningDxe.inf
   NvidiaPkg/Drivers/SystemIntegrityPolicyProvisioningDxe/SystemIntegrityPolicyProvisioningDxe.inf
-
-!if $(BOOT_METHOD) == Chainload
-  # UEFI Chainloader (BootShim)
-  NvidiaPkg/Applications/UEFILoader/UEFILoader.inf {
-    <LibraryClasses>
-  !if $(TARGET) == DEBUG
-      DebugLib|MdePkg/Library/UefiDebugLibConOut/UefiDebugLibConOut.inf
-  !else
-      SerialPortLib|MdePkg/Library/BaseSerialPortLibNull/BaseSerialPortLibNull.inf
-  !endif
-  }
-!endif
 
   # ACPI
   # We use pre-built ACPI tables, so only core components are loaded

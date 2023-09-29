@@ -722,9 +722,6 @@ VOID CacheInfoUpdateSmbiosType7(VOID)
   LogSmbiosData(
       (EFI_SMBIOS_TABLE_HEADER *)&mCacheInfoType7_L1I,
       mCacheInfoType7Strings, NULL);
-  LogSmbiosData(
-      (EFI_SMBIOS_TABLE_HEADER *)&mCacheInfoType7_L1I,
-      mCacheInfoType7Strings, NULL);
 
   LogSmbiosData(
       (EFI_SMBIOS_TABLE_HEADER *)&mCacheInfoType7_L1D,

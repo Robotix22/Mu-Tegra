@@ -9,7 +9,7 @@
 
 ## IdeaPad Yoga 11
 
-**NOTE: Stuck in PrePi Assembly Phase.**
+**NOTE: Stuck in PrePi C Code Phase.**
 
 <img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Lenovo-IdeaPad-Yoga-11.png" width="500" alt="Preview">
 
@@ -20,10 +20,6 @@
 **Tester: [Robotix22](https://github.com/Robotix22/)**
 
 ### UEFI Status
-
-<table>
-<tr><th>Chainload</th><th>Payload</th></tr>
-<tr><td>
 
 |Feature|Description|State|
 |:------|:----------|:---:|
@@ -38,24 +34,6 @@
 |SD Card||❌|
 |ACPI||❌|
 |UART||❌|
-
-</td><td>
-
-|Feature|Description|State|
-|:------|:----------|:---:|
-|Display||❌|
-|Touchscreen||❌|
-|Clocks||❌|
-|eMMC||❌|
-|Buttons||❌|
-|USB||❌|
-|Mouse Pad||❌|
-|Keyboard||❌|
-|SD Card||❌|
-|ACPI||❌|
-|UART||❌|
-
-</td></tr> </table>
 
 ### OS Status
 

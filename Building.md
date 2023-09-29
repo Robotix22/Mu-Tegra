@@ -2,7 +2,7 @@
 
 ### Step 1:
 
-First of you need the sourcecode to compile a UEFI Image. <br />
+First of you need the sourcecode to compile a UEFI Payload. <br />
 Clone the Repo by using:
 ```
 git clone https://github.com/Robotix22/Mu-Tegra.git --recursive
@@ -24,7 +24,7 @@ So now we are able to begin the real UEFI build:
 ./build_uefi.sh -d <Codename> [-r <Build Mode>]
 ```
 
-When then Build is done you will find a `.elf` File and a `.efi` File in the root of the repo.
+When then Build is done you will find a `.bin` File in the root of the repo.
 
 ## Troubleshooting:
 

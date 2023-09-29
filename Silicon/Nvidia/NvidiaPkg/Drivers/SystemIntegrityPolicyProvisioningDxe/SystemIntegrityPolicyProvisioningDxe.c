@@ -27,6 +27,7 @@
 // Global variables.
 //
 VOID                 *mFileSystemRegistration = NULL;
+STATIC EFI_IMAGE_LOAD EfiImageLoad            = NULL;
 
 EFI_STATUS
 EFIAPI
@@ -107,7 +108,7 @@ TryWritePlatformSiPolicy(EFI_HANDLE SfsHandle)
   DEBUG((DEBUG_ERROR, "%a: Write \\EFI\\Microsoft\\Boot\\SiPolicy.p7b\n", __FUNCTION__));
 
   Status = PayloadFileProtocol->Write(
-      PayloadFileProtocol, (UINTN *)&mSiPolicyDefaultSize, (VOID *)mSiPolicyDefault);
+      PayloadFileProtocol, &mSiPolicyDefaultSize, mSiPolicyDefault);
   if (EFI_ERROR(Status)) {
     DEBUG((DEBUG_ERROR, "Failed to write SiPolicy.p7b: %r\n", Status));
   }

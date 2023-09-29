@@ -1,5 +1,5 @@
 # @file
-# Script to Build IdeaPad Yoga 11 UEFI firmware
+# Script to Build Lenovo IdeaPad Yoga 11 UEFI firmware
 #
 # Copyright (c) Microsoft Corporation.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -205,7 +205,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         self.env.SetValue("PRODUCT_NAME", "Venus", "Platform Hardcoded")
         self.env.SetValue("ACTIVE_PLATFORM", "VenusPkg/Venus.dsc", "Platform Hardcoded")
         self.env.SetValue("TARGET_ARCH", "ARM", "Platform Hardcoded")
-        self.env.SetValue("TOOL_CHAIN_TAG", "CLANG38", "Platform Hardcoded")
+        self.env.SetValue("TOOL_CHAIN_TAG", "CLANG38", "Default")
         self.env.SetValue("BUILDREPORTING", "TRUE", "Enabling build report")
         self.env.SetValue("BUILDREPORT_TYPES", "PCD DEPEX FLASH BUILD_FLAGS LIBRARY FIXED_ADDRESS HASH", "Setting build report types")
         # Include the MFCI test cert by default, override on the commandline with "BLD_*_SHIP_MODE=TRUE" if you want the retail MFCI cert
@@ -213,7 +213,6 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         self.env.SetValue("BLD_*_FD_BASE", self.env.GetValue("FD_BASE"), "Default")
         self.env.SetValue("BLD_*_FD_SIZE", self.env.GetValue("FD_SIZE"), "Default")
         self.env.SetValue("BLD_*_FD_BLOCKS", self.env.GetValue("FD_BLOCKS"), "Default")
-        self.env.SetValue("BLD_*_BOOT_METHOD", self.env.GetValue("BOOT_METHOD"), "Default")
         return 0
 
     def PlatformPreBuild(self):

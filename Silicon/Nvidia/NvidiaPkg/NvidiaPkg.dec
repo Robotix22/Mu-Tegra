@@ -1,30 +1,30 @@
 [Defines]
   DEC_SPECIFICATION                   = 0x00010005
   PACKAGE_NAME                        = NvidiaPkg
-  PACKAGE_GUID                        = 5b98e562-4420-4ff1-b025-d0c6a815224a
+  PACKAGE_GUID                        = 8cd16071-0693-4422-8042-4ebc09563be3
   PACKAGE_VERSION                     = 0.1
 
 [Includes.common]
   Include                               # Root include for the package
 
 [Guids.common]
-  gNvidiaPkgTokenSpaceGuid            = { 0x5b98e562, 0x4420, 0x4ff1, { 0xb0, 0x25, 0xd0, 0xc6, 0xa8, 0x15, 0x22, 0x4a } }
+  gNvidiaPkgTokenSpaceGuid            = { 0x8cd16071, 0x0693, 0x4422, { 0x80, 0x42, 0x4e, 0xbc, 0x09, 0x56, 0x3b, 0xe3 } }
 
 [PcdsFixedAtBuild.common]
   # PNG File GUIDs
-  gNvidiaPkgTokenSpaceGuid.PcdNoBootOSFile|{ 0x09, 0xe1, 0x7a, 0x8a, 0x31, 0x12, 0x41, 0x21, 0xa4, 0x37, 0x18, 0x3c, 0xf1, 0x88, 0xee, 0x66 }|VOID*|0x0000a100
+  gNvidiaPkgTokenSpaceGuid.PcdNoBootOSFile|{ 0x09, 0xe1, 0x7a, 0x8a, 0x31, 0x12, 0x41, 0x21, 0xa4, 0x37, 0x18, 0x3c, 0xf1, 0x88, 0xee, 0x66 }|VOID*|0x0000a200
 
   # SmBios
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemVendor|""|VOID*|0x0000a200
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorModel|""|VOID*|0x0000a201
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|""|VOID*|0x0000a202
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemModel|""|VOID*|0x0000a203
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemRetailModel|""|VOID*|0x0000a204
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemRetailSku|""|VOID*|0x0000a205
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosBoardModel|""|VOID*|0x0000a206
+  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemVendor|""|VOID*|0x0000a300
+  gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorModel|""|VOID*|0x0000a301
+  gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|""|VOID*|0x0000a302
+  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemModel|""|VOID*|0x0000a303
+  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemRetailModel|""|VOID*|0x0000a304
+  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemRetailSku|""|VOID*|0x0000a305
+  gNvidiaPkgTokenSpaceGuid.PcdSmbiosBoardModel|""|VOID*|0x0000a306
 
   # Simple FrameBuffer
-  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferWidth|0|UINT32|0x0000a300
-  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferHeight|0|UINT32|0x0000a301
-  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp|0|UINT32|0x0000a302
-  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferDelay|0|UINT32|0x0000a303
+  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferWidth|0|UINT32|0x0000a400
+  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferHeight|0|UINT32|0x0000a401
+  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp|0|UINT32|0x0000a402
+  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferDelay|0|UINT32|0x0000a403

@@ -1,11 +1,11 @@
 [Defines]
   DEC_SPECIFICATION                   = 0x00010005
-  PACKAGE_NAME                        = Tegra30Pkg
-  PACKAGE_GUID                        = 32bc6385-3c8d-410f-a57c-87c596f7e95f
+  PACKAGE_NAME                        = Tegra30
+  PACKAGE_GUID                        = 918df65f-f6d8-4ff0-a755-92020c6b712b
   PACKAGE_VERSION                     = 0.1
 
 [Includes.common]
   Include                               # Root include for the package
 
 [Guids.common]
-  gTegra30PkgTokenSpaceGuid           = { 0x32bc6385, 0x3c8d, 0x410f, { 0xa5, 0x7c, 0x87, 0xc5, 0x96, 0xf7, 0xe9, 0x5f } }
+  gTegra30TokenSpaceGuid              = { 0x918df65f, 0xf6d8, 0x4ff0, { 0xa7, 0x55, 0x92, 0x02, 0x0c, 0x6b, 0x71, 0x2b } }

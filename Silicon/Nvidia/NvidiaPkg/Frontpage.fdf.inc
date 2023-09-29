@@ -3,10 +3,12 @@
   INF DfciPkg/SettingsManager/SettingsManagerDxe.inf
   INF MsGraphicsPkg/MsUiTheme/Dxe/MsUiThemeProtocol.inf
   INF MsGraphicsPkg/RenderingEngineDxe/RenderingEngineDxe.inf
+  #INF MsGraphicsPkg/DisplayEngineDxe/DisplayEngineDxe.inf
   INF OemPkg/BootMenu/BootMenu.inf
   INF NvidiaPkg/Applications/FrontPage/FrontPage.inf
   INF PcBdsPkg/MsBootPolicy/MsBootPolicy.inf
   INF MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
+  #INF MdeModulePkg/Universal/RegularExpressionDxe/RegularExpressionDxe.inf
   INF DfciPkg/DfciManager/DfciManager.inf
   INF MsGraphicsPkg/OnScreenKeyboardDxe/OnScreenKeyboardDxe.inf
   INF MsGraphicsPkg/SimpleWindowManagerDxe/SimpleWindowManagerDxe.inf
@@ -19,6 +21,8 @@
   INF MsWheaPkg/HwhMenu/HwhMenu.inf
 
   INF MsCorePkg/AcpiRGRT/AcpiRgrt.inf
+
+  #INF DfciPkg/Application/DfciMenu/DfciMenu.inf
 
   FILE FREEFORM = PCD(gNvidiaPkgTokenSpaceGuid.PcdNoBootOSFile) {
     SECTION RAW = NvidiaPkg/Include/Resources/NoBootOS.png

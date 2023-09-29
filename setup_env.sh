@@ -42,14 +42,14 @@ fi
 
 # Install all needed Packages
 if [ ${PAK} = apt ]; then
-    sudo apt install -y pip git mono-devel build-essential nuget uuid-dev iasl nasm gcc-arm-linux-gnueabi python3 python3-distutils python3-git python3-pip gettext locales gnupg ca-certificates python3-venv git git-core clang llvm curl||_error "\nFailed to install Packages!\n"
+    sudo apt install -y pip git mono-devel build-essential nuget uuid-dev iasl nasm gcc-arm-linux-gnueabihf python3 python3-distutils python3-git python3-pip gettext locales gnupg ca-certificates python3-venv git git-core clang llvm curl||_error "\nFailed to install Packages!\n"
 elif [ ${PAK} = dnf ]; then
-    sudo dnf install -y git mono-devel nuget iasl nasm arm-linux-gnueabihf-gcc make gcc automake kernel-devel python3 python3-pip gettext gnupg ca-certificates git git-core clang llvm curl||_error "\nFailed to install Packages!\n"
+    sudo dnf install -y git mono-devel nuget iasl nasm make gcc automake arm-linux-gnueabihf-gcc kernel-devel python3 python3-pip gettext gnupg ca-certificates git git-core clang llvm curl||_error "\nFailed to install Packages!\n"
 elif [ ${PAK} = pacman ] || [ ${PAK} = yay ]; then
     if [ ${PAK} = pacman ]; then
         sudo pacman -Syu --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
     fi
-    yay -Sy git mono base-devel nuget uuid iasl nasm arm-linux-gnu-gcc python3 python python-distutils-extra python-git python-pip gettext gnupg ca-certificates python-virtualenv python-pipenv core-git clang llvm curl||_error "\nFailed to install Packages!\n"
+    yay -Sy git mono base-devel nuget uuid iasl nasm arm-linux-gnueabihf-gcc python3 python python-distutils-extra python-git python-pip gettext gnupg ca-certificates python-virtualenv python-pipenv core-git clang llvm curl||_error "\nFailed to install Packages!\n"
 else
     _error "\nInvaild Package Manager!\nAvailbe Package Managers: apt, dnf, pacman and yay\n"
 fi
@@ -60,3 +60,6 @@ if [ ${VENV} = TRUE ]; then
 fi
 
 python3 -m pip install -r pip-requirements.txt||_error "\nFailed to install Pip Packages!\n"
+
+export CLANG38_BIN=/usr/lib/llvm-38/bin/
+export CLANG38_ARM_PREFIX=arm-linux-gnueabihf-

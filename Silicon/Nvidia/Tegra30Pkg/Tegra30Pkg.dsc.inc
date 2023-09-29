@@ -14,9 +14,9 @@
   USE_PHYSICAL_TIMER = 1
 
 [PcdsFixedAtBuild.common]
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|19200000
-  gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum|17
-  gArmTokenSpaceGuid.PcdArmArchTimerIntrNum|18
+  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|19200000          # TODO: Find the right Value
+  gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum|17              # TODO: Find the right Value
+  gArmTokenSpaceGuid.PcdArmArchTimerIntrNum|18                 # TODO: Find the right Value
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x50041000
   gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x50040100
   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x50041000
@@ -25,17 +25,8 @@
   gEmbeddedTokenSpaceGuid.PcdInterruptBaseAddress|0x50041000
 
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorModel|"Tegra (R) 3 @ 1.70 GHz"
-!if $(SOC_TYPE) == 0
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|"T30"
-!elseif $(SOC_TYPE) == 1
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|"T30L"
-!elseif $(SOC_TYPE) == 2
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|"T33"
-!elseif $(SOC_TYPE) == 3
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|"AP33"
-!endif
 
-  gArmPlatformTokenSpaceGuid.PcdCoreCount|4
+  gArmPlatformTokenSpaceGuid.PcdCoreCount|4                     # Actually 5 Cores
   gArmPlatformTokenSpaceGuid.PcdClusterCount|1
 
 [LibraryClasses.common]

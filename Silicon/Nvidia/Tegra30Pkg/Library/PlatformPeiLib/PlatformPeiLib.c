@@ -151,6 +151,7 @@ VOID BuildMemHobForFv(IN UINT16 Type)
 
 STATIC GUID gEfiShLibHobGuid     = EFI_SHIM_LIBRARY_GUID;
 STATIC GUID gEfiInfoBlkHobGuid   = EFI_INFORMATION_BLOCK_GUID;
+STATIC GUID gFvDecompressHobGuid = EFI_FV_DECOMPRESS_GUID;
 
 VOID InstallPlatformHob()
 {
@@ -160,10 +161,12 @@ VOID InstallPlatformHob()
     UINTN Data  = (UINTN)&ShLib;
     ARM_MEMORY_REGION_DESCRIPTOR_EX InfoBlk;
     LocateMemoryMapAreaByName("Info Blk", &InfoBlk);
+    UINTN Data3 = 0x9FC403D0;  // TODO: Find Right Value
 
     BuildMemHobForFv(EFI_HOB_TYPE_FV2);
     BuildGuidDataHob(&gEfiShLibHobGuid, &Data, sizeof(Data));
     BuildGuidDataHob(&gEfiInfoBlkHobGuid, &InfoBlk.Address, sizeof(InfoBlk.Address));
+    BuildGuidDataHob(&gFvDecompressHobGuid, &Data3, sizeof(Data3));
 
     initialized = 1;
   }
