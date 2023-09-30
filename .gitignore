@@ -1,6 +1,4 @@
 Build/
 Conf/
-BootShim/*.elf
-BootShim/*.bin
 Mu-*.bin
 Platforms/Lenovo/VenusPkg/__pycache__/
