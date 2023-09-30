@@ -120,10 +120,12 @@ PrePiMain (
   SerialPortWrite ((UINT8 *)Buffer, CharCount);
 
   // Initialize the Debug Agent for Source Level Debugging
+  DEBUG ((EFI_D_WARN, "Debug Agent In\n"));
   InitializeDebugAgent (DEBUG_AGENT_INIT_POSTMEM_SEC, NULL, NULL);
   SaveAndSetDebugTimerInterrupt (TRUE);
 
   // Declare the PI/UEFI memory region
+  DEBUG ((EFI_D_WARN, "Hob In\n"));
   HobList = HobConstructor (
               (VOID *)UefiMemoryBase,
               UefiMemorySize,
@@ -133,6 +135,7 @@ PrePiMain (
   PrePeiSetHobList (HobList);
 
   // Initialize MMU and Memory HOBs (Resource Descriptor HOBs)
+  DEBUG ((EFI_D_WARN, "MMU In\n"));
   Status = MemoryPeim (UefiMemoryBase, UefiMemorySize);
   ASSERT_EFI_ERROR (Status);
 
@@ -167,6 +170,7 @@ PrePiMain (
   SetBootMode (ArmPlatformGetBootMode ());
 
   // Initialize Platform HOBs (CpuHob and FvHob)
+  DEBUG ((EFI_D_WARN, "PlatformPeim In\n"));
   Status = PlatformPeim ();
   ASSERT_EFI_ERROR (Status);
 
@@ -177,10 +181,12 @@ PrePiMain (
   ProcessLibraryConstructorList ();
 
   // Assume the FV that contains the SEC (our code) also contains a compressed FV.
+  DEBUG ((EFI_D_WARN, "Decompress FV In\n"));
   Status = DecompressFirstFv ();
   ASSERT_EFI_ERROR (Status);
 
   // Load the DXE Core and transfer control to it
+  DEBUG ((EFI_D_WARN, "Load DXE Core In\n"));
   Status = LoadDxeCoreFromFv (NULL, 0);
   ASSERT_EFI_ERROR (Status);
 }

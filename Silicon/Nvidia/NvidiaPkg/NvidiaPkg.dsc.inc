@@ -263,7 +263,7 @@
 
   ArmPlatformLib|NvidiaPkg/Library/ArmPlatformLib/ArmPlatformLib.inf
 
-  TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
+  TimerLib|NvidiaPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
 
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
