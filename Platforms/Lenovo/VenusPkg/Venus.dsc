@@ -35,9 +35,9 @@
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"Robotix22"  # Device Maintainer
 
-  gArmTokenSpaceGuid.PcdCpuVectorBaseAddress|0x88740000
+  gArmTokenSpaceGuid.PcdCpuVectorBaseAddress|0x84848000
 
-  gEmbeddedTokenSpaceGuid.PcdPrePiStackBase|0x84200000
+  gEmbeddedTokenSpaceGuid.PcdPrePiStackBase|0x80308000
   gEmbeddedTokenSpaceGuid.PcdPrePiStackSize|0x00040000           # 256K stack
 
   # SmBios
