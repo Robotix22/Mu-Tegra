@@ -1,5 +1,7 @@
 Build/
 Conf/
+BootShim/*.elf
+BootShim/*.bin
 Mu-*.bin
 Platforms/Lenovo/VenusPkg/__pycache__/
 Platforms/Microsoft/sRTPkg/__pycache__/
