@@ -9,7 +9,7 @@
 
 ## IdeaPad Yoga 11
 
-**NOTE: Stuck in PrePi C Code Phase.**
+**NOTE: Stuck in Enabling MMU.**
 
 <img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Lenovo-IdeaPad-Yoga-11.png" width="500" alt="Preview">
 
