@@ -54,14 +54,7 @@ else _error "\nDevice configuration not found!\nCheck if your .conf File is in t
 fi
 
 # Delete Output Files if present
-rm ./BootShim/BootShim.bin &> /dev/null
-rm ./BootShim/BootShim.elf &> /dev/null
 rm Mu-${TARGET_DEVICE}.bin &> /dev/null
-
-# Compile BootShim
-cd BootShim
-make UEFI_BASE=${TARGET_FD_BASE} UEFI_SIZE=${TARGET_FD_SIZE}||_error "\nFailed to Compile BootShim!\n"
-cd ..
 
 # Apply Project Mu Patches
 cp ./MuPatches/Compile.patch ./Mu_Basecore/
@@ -75,7 +68,7 @@ stuart_update -c "Platforms/${TARGET_DEVICE_VENDOR}/${TARGET_DEVICE}Pkg/Platform
 stuart_build -c "Platforms/${TARGET_DEVICE_VENDOR}/${TARGET_DEVICE}Pkg/PlatformBuild.py" TOOL_CHAIN_TAG=CLANG38 "TARGET=${_TARGET_BUILD_MODE}" "FD_BASE=${TARGET_FD_BASE}" "FD_SIZE=${TARGET_FD_SIZE}" "FD_BLOCKS=${TARGET_FD_BLOCKS}"||_error "\nFailed to Compile UEFI!\n"
 
 # Copy UEFI FD File to root as Payload
-cat ./BootShim/BootShim.bin "./Build/${TARGET_DEVICE}Pkg/${_TARGET_BUILD_MODE}_CLANG38/FV/${TARGET_DEVICE^^}_UEFI.fd" > "./Mu-${TARGET_DEVICE}.bin"||_error "\nFailed to Copy UEFI Payload!\n"
+cp "./Build/${TARGET_DEVICE}Pkg/${_TARGET_BUILD_MODE}_CLANG38/FV/${TARGET_DEVICE^^}_UEFI.fd" "./Mu-${TARGET_DEVICE}.bin"||_error "\nFailed to Copy UEFI Payload!\n"
 
 if [[ ${STATUS} != "STABLE" ]]; then
 	if [[ ${STATUS} == "UNSTABLE" ]];
