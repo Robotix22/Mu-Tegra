@@ -263,7 +263,7 @@
 
   ArmPlatformLib|NvidiaPkg/Library/ArmPlatformLib/ArmPlatformLib.inf
 
-  TimerLib|NvidiaPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
+  TimerLib|NvidiaPkg/Library/TegraTimerLib/TegraTimerLib.inf
 
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
@@ -455,10 +455,7 @@
   MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf
   MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
   MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
-  EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf {
-    <LibraryClasses>
-	  RealTimeClockLib|NvidiaPkg/Library/VirtualRealTimeClockLib/VirtualRealTimeClockLib.inf
-  }
+  EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
 
   # HID Support
   HidPkg/HidKeyboardDxe/HidKeyboardDxe.inf
