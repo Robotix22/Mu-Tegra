@@ -9,7 +9,7 @@
 
 ## IdeaPad Yoga 11
 
-**NOTE: No working Timer is present, So ArmGicDxe crashes.**
+**NOTE: Tegra 3 uses a special Timer, A Driver dosen't exist for it yet, So Its Stuck loading Arch Timer Driver.**
 
 <img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Lenovo-IdeaPad-Yoga-11.png" width="500" alt="Preview">
 
