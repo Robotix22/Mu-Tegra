@@ -10,10 +10,12 @@
 #ifndef _TEGRA_TIMER_LIB_H_
 #define _TEGRA_TIMER_LIB_H_
 
-/* Tegra Timer Registers */
-#define TEGRA_TIMER_USEC_CNTR       0x60005010
+#include <Device/Tegra.h>
 
-/* Raw Tegra Timer */
-#define TEGRA_TIMER_RATE            1000000        /* 1 MHz */
+// Tegra Timer Registers
+#define TEGRA_TIMER_USEC_CNTR       NV_PA_TMRUS_BASE
+
+// Raw Tegra Timer
+#define TEGRA_TIMER_RATE            1000000                // 1 MHz
 
 #endif /* _TEGRA_TIMER_LIB_H_ */

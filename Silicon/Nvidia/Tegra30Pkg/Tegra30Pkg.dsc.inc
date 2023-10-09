@@ -12,11 +12,14 @@
 # SoC Defines
 [Defines]
   USE_PHYSICAL_TIMER = 1
+  USE_TEGRA_TIMER    = 1
 
 [PcdsFixedAtBuild.common]
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|19200000          # TODO: Find the right Value
-  gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum|17              # TODO: Find the right Value
-  gArmTokenSpaceGuid.PcdArmArchTimerIntrNum|18                 # TODO: Find the right Value
+  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerSecIntrNum|0
+  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerIntrNum|1
+  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerVirtIntrNum|41
+  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerHypIntrNum|42
+
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x50041000
   gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x50040100
   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x50041000
@@ -32,6 +35,7 @@
 [LibraryClasses.common]
   PlatformPeiLib|Tegra30Pkg/Library/PlatformPeiLib/PlatformPeiLib.inf
   PlatformPrePiLib|Tegra30Pkg/Library/PlatformPrePiLib/PlatformPrePiLib.inf
+  TegraClockLib|Tegra30Pkg/Library/TegraClockLib/TegraClockLib.inf
 
 [Components.common]
   Tegra30Pkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf

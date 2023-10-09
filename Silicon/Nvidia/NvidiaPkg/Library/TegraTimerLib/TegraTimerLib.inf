@@ -23,8 +23,8 @@
   MdePkg/MdePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
   ArmPkg/ArmPkg.dec
+  NvidiaPkg/NvidiaPkg.dec
 
 [LibraryClasses]
   DebugLib
   BaseLib
-  ArmGenericTimerCounterLib

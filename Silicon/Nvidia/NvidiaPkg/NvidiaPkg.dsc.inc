@@ -263,7 +263,11 @@
 
   ArmPlatformLib|NvidiaPkg/Library/ArmPlatformLib/ArmPlatformLib.inf
 
+!if $(USE_TEGRA_TIMER) == 1
   TimerLib|NvidiaPkg/Library/TegraTimerLib/TegraTimerLib.inf
+!else
+  TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
+!endif
 
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
@@ -439,7 +443,11 @@
 
   # Processor Core Services
   ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+!if $(USE_TEGRA_TIMER) == 1
+  NvidiaPkg/Drivers/TegraTimerDxe/TegraTimerDxe.inf
+!else
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+!endif
   ArmPkg/Drivers/CpuDxe/CpuDxe.inf
 
   # DT
