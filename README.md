@@ -1,4 +1,4 @@
-# [Project Mu](https://microsoft.github.io/mu/) UEFI Implementation for Nvidia Tegra®️ Devices
+# [Project Mu](https://microsoft.github.io/mu/) UEFI Implementation for Nvidia Tegra™ Devices
 
 <!-- ![Banner](https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Banner.png) -->
 
@@ -19,10 +19,9 @@ This repo brings UEFI Firmware on your Device (If supported) to boot OSs like Wi
 
 ## Credits
 
-Thanks to [Gustave Monce](https://github.com/gus33000) for his [SurfaceDuoPkg](https://github.com/WOA-Project/SurfaceDuoPkg), without it this repo would probally not exist.
+Thanks to [Gustave Monce](https://github.com/gus33000) for his [SurfaceDuoPkg](https://github.com/WOA-Project/SurfaceDuoPkg), without it this repo would probally not exist. <br />
 Many Thanks to the [OpenRT Comunity](https://openrt.gitbook.io/open-surfacert/) for some Tegra Specific Code and for Explaining many Things.
 
 ## License
 
-All code except drivers in `GPLDrivers` directory are licensed under BSD 2-Clause. <br />
-GPL Drivers are licensed under GPLv2 license.
+All code is licensed under BSD 2-Clause.
