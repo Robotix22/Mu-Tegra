@@ -315,40 +315,40 @@ TimerInitialize (
   ASSERT_EFI_ERROR (Status);
 
   //
-	// Configure microsecond timers to have 1MHz clock
-	// Config register is 0xqqww, where qq is "dividend", ww is "divisor"
-	// Uses n+1 scheme
-	//
+  // Configure microsecond timers to have 1MHz clock
+  // Config register is 0xqqww, where qq is "dividend", ww is "divisor"
+  // Uses n+1 scheme
+  //
   ClockRate = GetClockRate();
-	switch (ClockRate) {
-	  case 12000000:
-		  UsecConfig = 0x000b; // (11+1) / (0+1)
-		  break;
-	  case 12800000:
-		  UsecConfig = 0x043f; // (63+1) / (4+1)
-		  break;
-	  case 13000000:
-		  UsecConfig = 0x000c; // (12+1) / (0+1)
-		  break;
-	  case 16800000:
-		  UsecConfig = 0x0453; // (83+1) / (4+1)
-		  break;
-	  case 19200000:
-		  UsecConfig = 0x045f; // (95+1) / (4+1)
-		  break;
-	  case 26000000:
-		  UsecConfig = 0x0019; // (25+1) / (0+1)
-		  break;
-	  case 38400000:
-		  UsecConfig = 0x04bf; // (191+1) / (4+1)
-		  break;
-	  case 48000000:
-		  UsecConfig = 0x002f; // (47+1) / (0+1)
-		  break;
-	  default:
-		  DEBUG ((EFI_D_ERROR, "Recieved Invalid Clock Rate!\nClock Rate: %d", ClockRate));
+  switch (ClockRate) {
+    case 12000000:
+      UsecConfig = 0x000b; // (11+1) / (0+1)
+      break;
+    case 12800000:
+      UsecConfig = 0x043f; // (63+1) / (4+1)
+      break;
+    case 13000000:
+      UsecConfig = 0x000c; // (12+1) / (0+1)
+      break;
+    case 16800000:
+      UsecConfig = 0x0453; // (83+1) / (4+1)
+      break;
+    case 19200000:
+      UsecConfig = 0x045f; // (95+1) / (4+1)
+      break;
+    case 26000000:
+      UsecConfig = 0x0019; // (25+1) / (0+1)
+      break;
+    case 38400000:
+      UsecConfig = 0x04bf; // (191+1) / (4+1)
+      break;
+    case 48000000:
+      UsecConfig = 0x002f; // (47+1) / (0+1)
+      break;
+    default:
+      DEBUG ((EFI_D_ERROR, "Recieved Invalid Clock Rate!\nClock Rate: %d", ClockRate));
       ASSERT_EFI_ERROR (EFI_UNSUPPORTED);
-	}
+  }
 
   // Install the Tegra Timer Protocol onto a new handle
   Status = gBS->InstallMultipleProtocolInterfaces (&Handle, &gEfiTegraTimerProtocolGuid, &gTimer, NULL);

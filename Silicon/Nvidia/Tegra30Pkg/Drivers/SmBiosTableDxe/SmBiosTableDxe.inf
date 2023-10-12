@@ -47,5 +47,5 @@
 [Depex]
   gEfiSmbiosProtocolGuid
 
-[BuildOptions.ARM]
+[BuildOptions.common]
   GCC:*_*_*_CC_FLAGS = -Wno-missing-brace -Wno-error

@@ -2,7 +2,7 @@
 
 ### Step 1:
 
-First of you need the sourcecode to compile a UEFI Payload. <br />
+First of you need the sourcecode to compile a UEFI Image. <br />
 Clone the Repo by using:
 ```
 git clone https://github.com/Robotix22/Mu-Tegra.git --recursive

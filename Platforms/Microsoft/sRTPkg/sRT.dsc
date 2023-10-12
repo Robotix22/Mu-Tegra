@@ -25,13 +25,25 @@
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = sRTPkg/sRT.fdf
 
+  # 0 = T30
+  # 1 = T30L
+  # 2 = T33
+  SOC_TYPE                       = 0
+
+  # 0 = DDR3-L
+  # 1 = LPDDR2-1066
+  RAM_MODEL                      = 1
+
+[BuildOptions.common]
+  *_*_*_CC_FLAGS = -DSOC_TYPE=$(SOC_TYPE) -DRAM_MODEL=$(RAM_MODEL)
+
 [LibraryClasses.common]
   PlatformMemoryMapLib|sRTPkg/Library/PlatformMemoryMapLib/PlatformMemoryMapLib.inf
 
 [PcdsFixedAtBuild.common]
   # Platform-specific
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000                  # Starting address
-  gArmTokenSpaceGuid.PcdSystemMemorySize|0x40000000                  # 1GB Size
+  gArmTokenSpaceGuid.PcdSystemMemorySize|0x80000000                  # 2GB Size
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"No Maintainer"  # Device Maintainer
 

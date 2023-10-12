@@ -6,13 +6,13 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
-
 #include <PiPei.h>
 
 #include <Library/DebugLib.h>
 #include <Library/HobLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
+
 #include "PlatformPeiLibInternal.h"
 
 STATIC
@@ -115,16 +115,6 @@ ShLoadLib(CHAR8 *LibName, UINT32 LibVersion, VOID **LibIntf)
   if (LibIntf == NULL)
     return EFI_NOT_FOUND;
 
-  if (AsciiStriCmp(LibName, "UEFI Config Lib") == 0) {
-    *LibIntf = &ConfigLib;
-    return EFI_SUCCESS;
-  }
-
-  if (AsciiStriCmp(LibName, "SerialPort Lib") == 0) {
-    *LibIntf = &SioLib;
-    return EFI_SUCCESS;
-  }
-
   return EFI_NOT_FOUND;
 }
 
@@ -149,24 +139,23 @@ VOID BuildMemHobForFv(IN UINT16 Type)
   }
 }
 
-STATIC GUID gEfiShLibHobGuid     = EFI_SHIM_LIBRARY_GUID;
-STATIC GUID gEfiInfoBlkHobGuid   = EFI_INFORMATION_BLOCK_GUID;
-STATIC GUID gFvDecompressHobGuid = EFI_FV_DECOMPRESS_GUID;
+STATIC GUID gEfiInfoBlkHobGuid = EFI_INFORMATION_BLOCK_GUID;
+STATIC GUID gEfiShLibHobGuid   = EFI_SHIM_LIBRARY_GUID;
 
 VOID InstallPlatformHob()
 {
   static int initialized = 0;
 
   if (!initialized) {
-    UINTN Data  = (UINTN)&ShLib;
     ARM_MEMORY_REGION_DESCRIPTOR_EX InfoBlk;
     LocateMemoryMapAreaByName("Info Blk", &InfoBlk);
-    UINTN Data3 = 0x9FC403D0;  // TODO: Find Right Value
+
+    UINTN InfoBlkAddress = InfoBlk.Address;
+    UINTN ShLibAddress   = (UINTN)&ShLib;
 
     BuildMemHobForFv(EFI_HOB_TYPE_FV2);
-    BuildGuidDataHob(&gEfiShLibHobGuid, &Data, sizeof(Data));
-    BuildGuidDataHob(&gEfiInfoBlkHobGuid, &InfoBlk.Address, sizeof(InfoBlk.Address));
-    BuildGuidDataHob(&gFvDecompressHobGuid, &Data3, sizeof(Data3));
+    BuildGuidDataHob(&gEfiInfoBlkHobGuid, &InfoBlkAddress, sizeof(InfoBlkAddress));
+    BuildGuidDataHob(&gEfiShLibHobGuid, &ShLibAddress, sizeof(ShLibAddress));
 
     initialized = 1;
   }
@@ -178,7 +167,6 @@ PlatformPeim(
   VOID
   )
 {
-
   BuildFvHob(PcdGet64(PcdFvBaseAddress), PcdGet32(PcdFvSize));
 
   InstallPlatformHob();

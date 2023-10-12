@@ -2,13 +2,13 @@
 #include <Library/PlatformMemoryMapLib.h>
 
 static ARM_MEMORY_REGION_DESCRIPTOR_EX gDeviceMemoryDescriptorEx[] = {
-    /*
-     * Name, Address, Length, HobOption,
-     * ResourceAttribute, ArmAttributes,
-     * ResourceType, MemoryType
-     */
+    //
+    // Name, Address, Length, HobOption,
+    // ResourceAttribute, ArmAttributes,
+    // ResourceType, MemoryType
+    //
 
-    /* DDR Regions */
+    // DDR Regions
     {"UEFI FD", 0x84000000, 0x00200000, AddMem,
      EFI_RESOURCE_SYSTEM_MEMORY, SYSTEM_MEMORY_RESOURCE_ATTR_CAPABILITIES,
      EfiBootServicesData, ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK},
@@ -29,13 +29,13 @@ static ARM_MEMORY_REGION_DESCRIPTOR_EX gDeviceMemoryDescriptorEx[] = {
      EFI_RESOURCE_MEMORY_RESERVED, SYSTEM_MEMORY_RESOURCE_ATTR_CAPABILITIES,
      EfiReservedMemoryType, ARM_MEMORY_REGION_ATTRIBUTE_WRITE_THROUGH},
 
-    /* RAM Partition Regions */
-    /* TODO: Add RAM Partition Region */
+    // RAM Partition Regions
+    // TODO: Add RAM Partition Region
 
-    /* Register Regions */
-    /* TODO: Add Register Regions */
+    // Register Regions
+    // TODO: Add Register Regions
 
-    /* Terminator for MMU */
+    // Terminator for MMU
     {"Terminator", 0, 0, 0, 0, 0, 0, 0}};
 
 ARM_MEMORY_REGION_DESCRIPTOR_EX *GetPlatformMemoryMap()

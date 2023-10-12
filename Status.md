@@ -9,7 +9,7 @@
 
 ## IdeaPad Yoga 11
 
-**NOTE: Tegra 3 uses a special Timer, A Driver dosen't exist for it yet, So Its Stuck loading Arch Timer Driver.**
+**NOTE: Tegra Timer Dxe Driver isn't Present yet, Wich means its Stuck on UEFI Services.**
 
 <img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Lenovo-IdeaPad-Yoga-11.png" width="500" alt="Preview">
 
@@ -89,7 +89,7 @@
 
 **NOTE: Stuck in Enabling MMU.**
 
-<img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Microsoft-Surface-RT.png" width="500" alt="Preview">
+<img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Microsoft-Surface-RT.png" width="480" alt="Preview">
 
 **SoC: Tegra 3** <br />
 **Codename: sRT** <br />

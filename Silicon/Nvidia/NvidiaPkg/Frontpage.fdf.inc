@@ -22,7 +22,12 @@
 
   INF MsCorePkg/AcpiRGRT/AcpiRgrt.inf
 
-  #INF DfciPkg/Application/DfciMenu/DfciMenu.inf
+  INF NvidiaPkg/Applications/DfciMenu/DfciMenu.inf
+
+  FILE APPLICATION = PCD(gPcBdsPkgTokenSpaceGuid.PcdShellFile) {
+    SECTION PE32 = $(OUTPUT_DIRECTORY)/$(TARGET)_$(TOOL_CHAIN_TAG)/ARM/Shell.efi
+    SECTION UI = "Shell"
+  }
 
   FILE FREEFORM = PCD(gNvidiaPkgTokenSpaceGuid.PcdNoBootOSFile) {
     SECTION RAW = NvidiaPkg/Include/Resources/NoBootOS.png

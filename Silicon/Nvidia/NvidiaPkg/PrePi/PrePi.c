@@ -5,7 +5,6 @@
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
-
 #include <PiPei.h>
 
 #include <Library/CacheMaintenanceLib.h>
@@ -15,14 +14,13 @@
 #include <Library/PrePiHobListPointerLib.h>
 #include <Library/TimerLib.h>
 #include <Library/PerformanceLib.h>
+#include <Library/MemoryMapHelperLib.h>
 
 #include <Ppi/GuidedSectionExtraction.h>
 #include <Ppi/ArmMpCoreInfo.h>
 #include <Ppi/SecPerformance.h>
 
 #include "PrePi.h"
-
-#include <Library/MemoryMapHelperLib.h>
 
 #define IS_XIP()  (((UINT64)FixedPcdGet64 (PcdFdBaseAddress) > mSystemMemoryEnd) ||\
                   ((FixedPcdGet64 (PcdFdBaseAddress) + FixedPcdGet32 (PcdFdSize)) <= FixedPcdGet64 (PcdSystemMemoryBase)))

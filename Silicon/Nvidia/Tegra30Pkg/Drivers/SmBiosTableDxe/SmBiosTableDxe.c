@@ -256,8 +256,16 @@ SMBIOS_TABLE_TYPE4 mProcessorInfoType4_a9 = {
         1  // ProcessorVoltageIndicateLegacy      :1;
     },
     0,                     // ExternalClock;
+#if SOC_TYPE == 0
+    1500,                  // MaxSpeed;
+    1500,                  // CurrentSpeed;
+#elif SOC_TYPE == 1
+    1300,                  // MaxSpeed;
+    1300,                  // CurrentSpeed;
+#elif SOC_TYPE == 2
     1700,                  // MaxSpeed;
     1700,                  // CurrentSpeed;
+#endif
     0x41,                  // Status;
     ProcessorUpgradeOther, // ProcessorUpgrade;         ///< The enumeration
                            // value from PROCESSOR_UPGRADE.
@@ -296,7 +304,7 @@ CHAR8 *mProcessorInfoType4Strings[] = {
 SMBIOS_TABLE_TYPE7 mCacheInfoType7_L1I = {
     {EFI_SMBIOS_TYPE_CACHE_INFORMATION, sizeof(SMBIOS_TABLE_TYPE7), 0},
     1,     // SocketDesignation String
-    0x380, // Cache Configuration
+    0x280, // Cache Configuration
            // Cache Level        :3  (L1)
            // Cache Socketed     :1  (Not Socketed)
            // Reserved           :1
@@ -304,8 +312,8 @@ SMBIOS_TABLE_TYPE7 mCacheInfoType7_L1I = {
            // Enabled/Disabled   :1  (Enabled)
            // Operational Mode   :2  (Unknown)
            // Reserved           :6
-    0x0020, // Maximum Size
-    0x0020, // Install Size
+    0x20,  // Maximum Size
+    0x20,  // Install Size
     {
         // Supported SRAM Type
         0, // Other             :1
@@ -337,7 +345,7 @@ SMBIOS_TABLE_TYPE7 mCacheInfoType7_L1I = {
 SMBIOS_TABLE_TYPE7 mCacheInfoType7_L1D = {
     {EFI_SMBIOS_TYPE_CACHE_INFORMATION, sizeof(SMBIOS_TABLE_TYPE7), 0},
     2,     // SocketDesignation String
-    0x180, // Cache Configuration
+    0x280, // Cache Configuration
            // Cache Level        :3  (L1)
            // Cache Socketed     :1  (Not Socketed)
            // Reserved           :1
@@ -345,8 +353,8 @@ SMBIOS_TABLE_TYPE7 mCacheInfoType7_L1D = {
            // Enabled/Disabled   :1  (Enabled)
            // Operational Mode   :2  (WB)
            // Reserved           :6
-    0x0020, // Maximum Size
-    0x0020, // Install Size
+    0x20,  // Maximum Size
+    0x20,  // Install Size
     {
         // Supported SRAM Type
         0, // Other             :1
@@ -378,7 +386,7 @@ SMBIOS_TABLE_TYPE7 mCacheInfoType7_L1D = {
 SMBIOS_TABLE_TYPE7 mCacheInfoType7_L2 = {
     {EFI_SMBIOS_TYPE_CACHE_INFORMATION, sizeof(SMBIOS_TABLE_TYPE7), 0},
     3,      // SocketDesignation String
-    0x0181, // Cache Configuration
+    0x281,  // Cache Configuration
             // Cache Level        :3  (L2)
             // Cache Socketed     :1  (Not Socketed)
             // Reserved           :1
@@ -386,8 +394,8 @@ SMBIOS_TABLE_TYPE7 mCacheInfoType7_L2 = {
             // Enabled/Disabled   :1  (Enabled)
             // Operational Mode   :2  (WB)
             // Reserved           :6
-    0x0400, // Maximum Size
-    0x0400, // Install Size
+    0x400,  // Maximum Size
+    0x400,  // Install Size
     {
         // Supported SRAM Type
         0, // Other             :1
@@ -477,7 +485,17 @@ SMBIOS_TABLE_TYPE17 mMemDevInfoType17 = {
         1, // Unbuffered      :1;
         0, // Reserved1       :1;
     },
-    1500,                 // Speed;
+#if SOC_TYPE == 0
+#if RAM_MODEL == 0
+    0750,                 // Speed;
+#elif RAM_MODEL == 1
+    0533,                 // Speed;
+#endif
+#elif SOC_TYPE == 1
+    0667,                 // Speed;
+#elif SOC_TYPE == 2
+    0800,                 // Speed;
+#endif
     2,                    // Manufacturer String
     0,                    // SerialNumber String
     0,                    // AssetTag String

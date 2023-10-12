@@ -32,8 +32,8 @@ VOID UartInit(VOID)
   SerialPortInitialize();
   InitializeSharedUartBuffers();
 
-  DEBUG((EFI_D_WARN, "Project Mu on %a (Arm)\n", (VOID *)FixedPcdGetPtr(PcdSmbiosSystemModel)));
-  DEBUG((EFI_D_WARN, "Firmware version %s built at %a on %a\n\n", (CHAR16 *)PcdGetPtr(PcdFirmwareVersionString), __TIME__, __DATE__));
+  DEBUG((EFI_D_WARN, "\nProject Mu on %a (Arm)\n", (VOID *)FixedPcdGetPtr(PcdSmbiosSystemModel)));
+  DEBUG((EFI_D_WARN, "Firmware version %s built on %a at %a\n\n", (CHAR16 *)PcdGetPtr(PcdFirmwareVersionString), __TIME__, __DATE__));
 }
 
 VOID EarlyInitialization(VOID)

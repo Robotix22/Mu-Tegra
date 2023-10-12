@@ -20,7 +20,8 @@
   INF MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
   INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
   INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
-  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+  INF NvidiaPkg/Drivers/TegraTimerDxe/TegraTimerDxe.inf
+  INF CryptoPkg/Driver/CryptoDxe.inf
   INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
   INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
   INF FatPkg/EnhancedFatDxe/Fat.inf

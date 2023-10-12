@@ -1,5 +1,5 @@
 # @file
-# Script to Build Lenovo IdeaPad Yoga 11 UEFI firmware
+# Script to Build IdeaPad Yoga 11 UEFI firmware
 #
 # Copyright (c) Microsoft Corporation.
 # SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -34,7 +34,7 @@ class CommonPlatform():
     PackagesSupported = ("VenusPkg",)
     ArchSupported = ("ARM",)
     TargetsSupported = ("DEBUG", "RELEASE")
-    Scopes = ('Venus', 'gcc_arm_linux', 'edk2-build')
+    Scopes = ('Venus', 'gcc_ARM_linux', 'edk2-build')
     WorkspaceRoot = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     PackagesPath = (
         "Platforms/Lenovo",
@@ -205,7 +205,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
         self.env.SetValue("PRODUCT_NAME", "Venus", "Platform Hardcoded")
         self.env.SetValue("ACTIVE_PLATFORM", "VenusPkg/Venus.dsc", "Platform Hardcoded")
         self.env.SetValue("TARGET_ARCH", "ARM", "Platform Hardcoded")
-        self.env.SetValue("TOOL_CHAIN_TAG", "CLANG38", "Default")
+        self.env.SetValue("TOOL_CHAIN_TAG", self.env.GetValue("TOOL_CHAIN_TAG"), "Default")
         self.env.SetValue("BUILDREPORTING", "TRUE", "Enabling build report")
         self.env.SetValue("BUILDREPORT_TYPES", "PCD DEPEX FLASH BUILD_FLAGS LIBRARY FIXED_ADDRESS HASH", "Setting build report types")
         # Include the MFCI test cert by default, override on the commandline with "BLD_*_SHIP_MODE=TRUE" if you want the retail MFCI cert

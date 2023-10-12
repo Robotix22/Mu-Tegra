@@ -25,6 +25,18 @@
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = VenusPkg/Venus.fdf
 
+  # 0 = T30
+  # 1 = T30L
+  # 2 = T33
+  SOC_TYPE                       = 0
+
+  # 0 = DDR3-L
+  # 1 = LPDDR2-1066
+  RAM_MODEL                      = 0
+
+[BuildOptions.common]
+  *_*_*_CC_FLAGS = -DSOC_TYPE=$(SOC_TYPE) -DRAM_MODEL=$(RAM_MODEL)
+
 [LibraryClasses.common]
   PlatformMemoryMapLib|VenusPkg/Library/PlatformMemoryMapLib/PlatformMemoryMapLib.inf
 
@@ -41,12 +53,11 @@
   gEmbeddedTokenSpaceGuid.PcdPrePiStackSize|0x00040000           # 256K stack
 
   # SmBios
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemVendor|"Lenovo Group Limited"
+  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemVendor|"Lenovo TM"
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemModel|"IdeaPad Yoga 11"
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemRetailModel|"VenusTZ"
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemRetailSku|"IdeaPad_Yoga_11_VenusTZ"
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosBoardModel|"IdeaPad Yoga 11"
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|"T30"
 
   # Simple FrameBuffer
   gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferWidth|1366

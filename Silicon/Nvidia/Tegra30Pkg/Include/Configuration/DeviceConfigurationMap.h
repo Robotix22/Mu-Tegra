@@ -9,7 +9,7 @@ typedef struct {
 } CONFIGURATION_DESCRIPTOR_EX, *PCONFIGURATION_DESCRIPTOR_EX;
 
 static CONFIGURATION_DESCRIPTOR_EX gDeviceConfigurationDescriptorEx[] = {
-    /* Terminator */
+    // Terminator
     {"Terminator", 0xFFFFFFFF}};
 
 #endif

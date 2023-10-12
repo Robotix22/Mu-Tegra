@@ -79,7 +79,11 @@ PlatformIsDevicePathUsb(IN EFI_DEVICE_PATH_PROTOCOL *DevicePath)
 Library function used to provide the list of platform devices that MUST be
 connected at the beginning of BDS
 **/
-EFI_DEVICE_PATH_PROTOCOL **EFIAPI GetPlatformConnectList(VOID) { return NULL; }
+EFI_DEVICE_PATH_PROTOCOL **EFIAPI GetPlatformConnectList(VOID)
+{
+  // We do not have any device to advertise for connection before BDS begins
+  return NULL;
+}
 
 /**
  * Library function used to provide the list of platform console devices.
