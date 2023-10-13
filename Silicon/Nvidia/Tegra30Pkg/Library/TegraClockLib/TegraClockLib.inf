@@ -18,3 +18,8 @@
 [Packages]
   MdePkg/MdePkg.dec
   NvidiaPkg/NvidiaPkg.dec
+
+[LibraryClasses]
+  UefiLib
+  DebugLib
+  IoLib
