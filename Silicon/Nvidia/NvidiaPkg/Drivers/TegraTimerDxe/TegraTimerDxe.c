@@ -9,6 +9,7 @@
 **/
 #include <PiDxe.h>
 
+#include <Library/ArmLib.h>
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -27,17 +28,20 @@
 EFI_TIMER_NOTIFY  mTimerNotifyFunction     = (EFI_TIMER_NOTIFY)NULL;
 EFI_EVENT         EfiExitBootServicesEvent = (EFI_EVENT)NULL;
 
+// The Current Clock/Timer Rate
+UINT64 ClockRate = 0;
+
 // The current period of the timer interrupt
-UINT64  mTimerPeriod = 0;
+UINT64 mTimerPeriod = 0;
 
 // The latest Timer Tick calculated for mTimerPeriod
-UINT64  mTimerTicks = 0;
+UINT64 mTimerTicks = 0;
 
 // Number of elapsed period since the last Timer interrupt
-UINT64  mElapsedPeriod = 1;
+UINT64 mElapsedPeriod = 1;
 
 // Cached copy of the Hardware Interrupt protocol instance
-EFI_HARDWARE_INTERRUPT_PROTOCOL  *gInterrupt = NULL;
+EFI_HARDWARE_INTERRUPT_PROTOCOL *gInterrupt = NULL;
 
 /**
   This function registers the handler NotifyFunction so it is called every time
@@ -97,7 +101,7 @@ ExitBootServicesEvent (
   IN VOID       *Context
   )
 {
-  // TODO: Add Stuff
+  MmioWrite32 (TIMER_TMR1_TMR_PTV_0, (0 << 31) | ((0x69420 - 1) & 0x1FFFFFFF));
 }
 
 /**
@@ -135,7 +139,46 @@ TimerDriverSetTimerPeriod (
   IN UINT64                   TimerPeriod
   )
 {
-  // TODO: Add Stuff
+  UINT32   CounterValue;
+  UINT64   TimerTicks;
+  EFI_TPL  OriginalTPL;
+
+  // Always disable the timer
+  MmioWrite32 (TIMER_TMR1_TMR_PTV_0, (0 << 31) | ((0x69420 - 1) & 0x1FFFFFFF));
+
+  if (TimerPeriod != 0) {
+    // mTimerTicks = TimerPeriod in 1ms unit x Frequency.10^-3
+    //             = TimerPeriod.10^-4 x Frequency.10^-3
+    //             = (TimerPeriod x Frequency) x 10^-7
+    TimerTicks = MultU64x32 (TimerPeriod, ClockRate);
+    TimerTicks = DivU64x32 (TimerTicks, 10000000U);
+
+    // Raise TPL to update the mTimerTicks and mTimerPeriod to ensure these values
+    // are coherent in the interrupt handler
+    OriginalTPL = gBS->RaiseTPL (TPL_HIGH_LEVEL);
+
+    mTimerTicks    = TimerTicks;
+    mTimerPeriod   = TimerPeriod;
+    mElapsedPeriod = 1;
+
+    gBS->RestoreTPL (OriginalTPL);
+
+    // Get value of the current timer
+    CounterValue = MmioRead32 (TEGRA_TIMER_USEC_CNTR);
+
+    // Set the interrupt in Current Time + mTimerTick
+    MmioWrite32 (TIMER_TMR1_TMR_PCR_0 & 0x1FFFFFFF, CounterValue + mTimerTicks);
+
+    // Enable the timer
+    MmioWrite32 (TIMER_TMR1_TMR_PTV_0, (1 << 31) | ((0x69420 - 1) & 0x1FFFFFFF));
+  } else {
+    // Save the new timer period
+    mTimerPeriod = TimerPeriod;
+
+    // Reset the elapsed period
+    mElapsedPeriod = 1;
+  }
+
   return EFI_SUCCESS;
 }
 
@@ -227,7 +270,7 @@ TimerDriverGenerateSoftInterrupt (
   a period of time.
 
 **/
-EFI_TIMER_ARCH_PROTOCOL  gTimer = {
+EFI_TIMER_ARCH_PROTOCOL gTegraTimer = {
   TimerDriverRegisterHandler,
   TimerDriverSetTimerPeriod,
   TimerDriverGetTimerPeriod,
@@ -254,7 +297,54 @@ TimerInterruptHandler (
   IN  EFI_SYSTEM_CONTEXT         SystemContext
   )
 {
-  // TODO: Add Stuff
+  EFI_TPL  OriginalTPL;
+  UINT32   CurrentValue;
+  UINT64   CompareValue;
+
+  //
+  // DXE core uses this callback for the EFI timer tick. The DXE core uses locks
+  // that raise to TPL_HIGH and then restore back to current level. Thus we need
+  // to make sure TPL level is set to TPL_HIGH while we are handling the timer tick.
+  //
+  OriginalTPL = gBS->RaiseTPL (TPL_HIGH_LEVEL);
+
+  // Signal end of interrupt early to help avoid losing subsequent ticks
+  // from long duration handlers
+  gInterrupt->EndOfInterrupt (gInterrupt, Source);
+
+  // Check if the timer interrupt is active
+  if (MmioRead32 (TIMER_TMR1_TMR_PTV_0) == (1 << 31)) {
+    if (mTimerNotifyFunction != 0) {
+      mTimerNotifyFunction (mTimerPeriod * mElapsedPeriod);
+    }
+
+    //
+    // Reload the Timer
+    //
+
+    // Get current counter value
+    CurrentValue = MmioRead32 (TEGRA_TIMER_USEC_CNTR);
+
+    // Get the counter value to compare with
+    CompareValue = MmioRead32 (TIMER_TMR1_TMR_PCR_0) & 0x1FFFFFFF;
+
+    // This loop is needed in case we missed interrupts (eg: case when the interrupt handling
+    // has taken longer than mTickPeriod).
+    // Note: Physical Counter is counting up
+    mElapsedPeriod = 0;
+    do {
+      CompareValue += mTimerTicks;
+      mElapsedPeriod++;
+    } while (CompareValue < CurrentValue);
+
+    // Set next compare value
+    MmioWrite32 (TIMER_TMR1_TMR_PCR_0 & 0x1FFFFFFF, CompareValue);
+    MmioWrite32 (TIMER_TMR1_TMR_PTV_0, (0 << 31) | ((0x69420 - 1) & 0x1FFFFFFF));
+    MmioWrite32 (TIMER_TMR1_TMR_PTV_0, (1 << 31) | ((0x69420 - 1) & 0x1FFFFFFF));
+    ArmInstructionSynchronizationBarrier ();
+  }
+
+  gBS->RestoreTPL (OriginalTPL);
 }
 
 /**
@@ -282,21 +372,26 @@ TimerInitialize (
   UINT32      TimerHypIntrNum = 0;
   UINT32      UsecConfig      = 0;
   UINT32      Value           = 0;
-  UINT64      ClockRate       = 0;
 
   // Find the interrupt controller protocol. ASSERT if not found.
   Status = gBS->LocateProtocol (&gHardwareInterruptProtocolGuid, NULL, (VOID **)&gInterrupt);
-  ASSERT_EFI_ERROR (Status);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((EFI_D_ERROR, "Failed to Locate GIC Protocol!\n"));
+    ASSERT_EFI_ERROR (Status);
+  }
 
   // Disable the timer
-  // TODO: Add Timer Disable here
+  MmioWrite32 (TIMER_TMR1_TMR_PTV_0, (0 << 31) | ((0x69420 - 1) & 0x1FFFFFFF));
 
   // Install secure and Non-secure interrupt handlers
   // Note: Because it is not possible to determine the security state of the
   // CPU dynamically, we just install interrupt handler for both sec and non-sec
   // timer PPI
   Status = gInterrupt->RegisterInterruptSource (gInterrupt, PcdGet32 (PcdTegraTimerVirtIntrNum), TimerInterruptHandler);
-  ASSERT_EFI_ERROR (Status);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((EFI_D_ERROR, "Failed to Register Virtual Timer Interrupt!\n"));
+    ASSERT_EFI_ERROR (Status);
+  }
 
   //
   // The hypervisor timer interrupt may be omitted by implementations that
@@ -305,21 +400,30 @@ TimerInitialize (
   TimerHypIntrNum = PcdGet32 (PcdTegraTimerHypIntrNum);
   if (TimerHypIntrNum != 0) {
     Status = gInterrupt->RegisterInterruptSource (gInterrupt, TimerHypIntrNum, TimerInterruptHandler);
-    ASSERT_EFI_ERROR (Status);
+    if (EFI_ERROR (Status)) {
+      DEBUG ((EFI_D_ERROR, "Failed to Register Hypervisor Timer Interrupt!\n"));
+      ASSERT_EFI_ERROR (Status);
+    }
   }
 
   Status = gInterrupt->RegisterInterruptSource (gInterrupt, PcdGet32 (PcdTegraTimerSecIntrNum), TimerInterruptHandler);
-  ASSERT_EFI_ERROR (Status);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((EFI_D_ERROR, "Failed to Register Secondary Timer Interrupt!\n"));
+    ASSERT_EFI_ERROR (Status);
+  }
 
   Status = gInterrupt->RegisterInterruptSource (gInterrupt, PcdGet32 (PcdTegraTimerIntrNum), TimerInterruptHandler);
-  ASSERT_EFI_ERROR (Status);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((EFI_D_ERROR, "Failed to Register Main Timer Interrupt!\n"));
+    ASSERT_EFI_ERROR (Status);
+  }
 
   //
   // Configure microsecond timers to have 1MHz clock
   // Config register is 0xqqww, where qq is "dividend", ww is "divisor"
   // Uses n+1 scheme
   //
-  ClockRate = GetClockRate();
+  ClockRate = GetClockRate(CLOCK_ID_CLK_M);
   switch (ClockRate) {
     case 12000000:
       UsecConfig = 0x000b; // (11+1) / (0+1)
@@ -346,18 +450,23 @@ TimerInitialize (
       UsecConfig = 0x002f; // (47+1) / (0+1)
       break;
     default:
-      DEBUG ((EFI_D_ERROR, "Recieved Invalid Clock Rate!\nClock Rate: %d", ClockRate));
+      DEBUG ((EFI_D_ERROR, "Recieved Invalid Clock Rate: %d\n", ClockRate));
       ASSERT_EFI_ERROR (EFI_UNSUPPORTED);
   }
 
+  DEBUG ((EFI_D_WARN, "Clock Rate: %d\n", ClockRate));
+
   // Install the Tegra Timer Protocol onto a new handle
-  Status = gBS->InstallMultipleProtocolInterfaces (&Handle, &gEfiTegraTimerProtocolGuid, &gTimer, NULL);
+  Status = gBS->InstallMultipleProtocolInterfaces (&Handle, &gEfiTimerArchProtocolGuid, &gTegraTimer, NULL);
   ASSERT_EFI_ERROR (Status);
 
-  // Everything is ready, Enable Timer
+  // Configure Timer
   Value = MmioRead32(TEGRA_OSC_CLK_ENB_L_SET);
-	MmioWrite32(Value | TEGRA_OSC_SET_CLK_ENB_TMR, TEGRA_OSC_CLK_ENB_L_SET);
-	MmioWrite32(UsecConfig, TEGRA_TIMER_USEC_CFG);
+	MmioWrite32(TEGRA_OSC_CLK_ENB_L_SET, Value | TEGRA_OSC_SET_CLK_ENB_TMR);
+	MmioWrite32(TEGRA_TIMER_USEC_CFG, UsecConfig);
+
+  // Everything is ready, Enable Timer
+  MmioWrite32 (TIMER_TMR1_TMR_PTV_0, (1 << 31) | ((0x69420 - 1) & 0x1FFFFFFF));
 
   // Register for an ExitBootServicesEvent
   Status = gBS->CreateEvent (EVT_SIGNAL_EXIT_BOOT_SERVICES, TPL_NOTIFY, ExitBootServicesEvent, NULL, &EfiExitBootServicesEvent);

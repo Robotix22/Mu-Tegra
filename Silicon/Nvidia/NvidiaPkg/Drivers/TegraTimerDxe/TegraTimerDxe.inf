@@ -20,11 +20,13 @@
   TegraTimerDxe.c
 
 [Packages]
+  ArmPkg/ArmPkg.dec
   MdePkg/MdePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
   NvidiaPkg/NvidiaPkg.dec
 
 [LibraryClasses]
+  ArmLib
   BaseLib
   UefiRuntimeServicesTableLib
   UefiLib
@@ -35,7 +37,7 @@
   TegraClockLib
 
 [Protocols]
-  gEfiTegraTimerProtocolGuid
+  gEfiTimerArchProtocolGuid
   gHardwareInterruptProtocolGuid
 
 [Pcd.common]

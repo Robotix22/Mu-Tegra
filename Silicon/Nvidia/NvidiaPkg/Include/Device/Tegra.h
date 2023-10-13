@@ -6,6 +6,7 @@
 #ifndef _TEGRA_H_
 #define _TEGRA_H_
 
+// Tegra Base Addresses
 #define NV_PA_TMRUS_BASE    0x60005010
 #define NV_PA_CLK_RST_BASE  0x60006000
 

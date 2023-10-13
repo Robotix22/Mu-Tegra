@@ -12,7 +12,9 @@
 #include <Device/Tegra.h>
 #include <Device/Clock.h>
 
-#include "TegraClock.h"
+// CLK_RST_CONTROLLER_OSC_CTRL_0
+#define OSC_FREQ_SHIFT          28
+#define OSC_FREQ_MASK           (0xF << OSC_FREQ_SHIFT)
 
 //
 // Get the oscillator frequency, from the corresponding hardware configuration
@@ -28,16 +30,18 @@ enum ClockOscFreq GetOscClockFreq()
   return (Reg & OSC_FREQ_MASK) >> OSC_FREQ_SHIFT;
 }
 
-UINT64
-GetClockRate ()
+unsigned GetClockRate(enum clock_id clkid)
 {
   UINT64 ParentClockRate = 0;
+  UINT64 ClockRate       = 0;
 
   // Get Clock Oscillator Freq
   ParentClockRate = OscFreq[GetOscClockFreq()];
   DEBUG ((EFI_D_WARN, "Parent Clock Rate: %d\n", ParentClockRate));
 
+  if (clkid == CLOCK_ID_OSC || clkid == CLOCK_ID_CLK_M) { return ParentClockRate; }
+
   // TODO: Add all other Clock Stuff
 
-  return 0;
+  return ClockRate;
 }

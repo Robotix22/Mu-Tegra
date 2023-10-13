@@ -15,7 +15,12 @@
 #define TEGRA_OSC_CLK_ENB_L_SET		(NV_PA_CLK_RST_BASE + 0x320)
 #define TEGRA_OSC_SET_CLK_ENB_TMR	0x5
 
+// Tegra Timer Base Address
+#define TIMER_TMR1_TMR_PTV_0      0x60005000
+#define TIMER_TMR1_TMR_PCR_0      (TIMER_TMR1_TMR_PTV_0 + 0x4)
+
 // Tegra Timer Registers
-#define TEGRA_TIMER_USEC_CFG		(NV_PA_TMRUS_BASE + 4)
+#define TEGRA_TIMER_USEC_CNTR     NV_PA_TMRUS_BASE
+#define TEGRA_TIMER_USEC_CFG		  (NV_PA_TMRUS_BASE + 0x4)
 
 #endif /* _TEGRA_TIMER_H_ */
