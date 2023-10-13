@@ -9,7 +9,7 @@
 
 ## IdeaPad Yoga 11
 
-**NOTE: Tegra Timer Dxe Driver isn't Present yet, Wich means its Stuck on UEFI Services.**
+**NOTE: Before BDS Entry, DXE Core Complains about Signature.**
 
 <img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Lenovo-IdeaPad-Yoga-11.png" width="500" alt="Preview">
 
@@ -25,7 +25,7 @@
 |:------|:----------|:---:|
 |Display||✅|
 |Touchscreen||❌|
-|Clocks||❌|
+|Clocks||✅|
 |eMMC||❌|
 |Buttons||❌|
 |USB||❌|
