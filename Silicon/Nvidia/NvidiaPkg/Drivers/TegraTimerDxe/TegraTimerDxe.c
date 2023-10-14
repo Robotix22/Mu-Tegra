@@ -369,7 +369,6 @@ TimerInitialize (
 {
   EFI_HANDLE  Handle          = NULL;
   EFI_STATUS  Status          = EFI_SUCCESS;
-  UINT32      TimerHypIntrNum = 0;
   UINT32      UsecConfig      = 0;
   UINT32      Value           = 0;
 
@@ -387,36 +386,13 @@ TimerInitialize (
   // Note: Because it is not possible to determine the security state of the
   // CPU dynamically, we just install interrupt handler for both sec and non-sec
   // timer PPI
-  Status = gInterrupt->RegisterInterruptSource (gInterrupt, PcdGet32 (PcdTegraTimerVirtIntrNum), TimerInterruptHandler);
+  Status = gInterrupt->RegisterInterruptSource (gInterrupt, PcdGet32 (PcdTegraTimerLegacyIntrNum), TimerInterruptHandler);
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Failed to Register Virtual Timer Interrupt!\n"));
+    DEBUG ((EFI_D_ERROR, "Failed to Register Legacy Timer Interrupt!\n"));
     ASSERT_EFI_ERROR (Status);
   }
 
-  //
-  // The hypervisor timer interrupt may be omitted by implementations that
-  // execute under virtualization.
-  //
-  TimerHypIntrNum = PcdGet32 (PcdTegraTimerHypIntrNum);
-  if (TimerHypIntrNum != 0) {
-    Status = gInterrupt->RegisterInterruptSource (gInterrupt, TimerHypIntrNum, TimerInterruptHandler);
-    if (EFI_ERROR (Status)) {
-      DEBUG ((EFI_D_ERROR, "Failed to Register Hypervisor Timer Interrupt!\n"));
-      ASSERT_EFI_ERROR (Status);
-    }
-  }
-
-  Status = gInterrupt->RegisterInterruptSource (gInterrupt, PcdGet32 (PcdTegraTimerSecIntrNum), TimerInterruptHandler);
-  if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Failed to Register Secondary Timer Interrupt!\n"));
-    ASSERT_EFI_ERROR (Status);
-  }
-
-  Status = gInterrupt->RegisterInterruptSource (gInterrupt, PcdGet32 (PcdTegraTimerIntrNum), TimerInterruptHandler);
-  if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "Failed to Register Main Timer Interrupt!\n"));
-    ASSERT_EFI_ERROR (Status);
-  }
+  // TODO: Add Tegra Interrupts here.
 
   //
   // Configure microsecond timers to have 1MHz clock

@@ -15,10 +15,7 @@
   USE_TEGRA_TIMER    = 1
 
 [PcdsFixedAtBuild.common]
-  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerSecIntrNum|0
-  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerIntrNum|1
-  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerVirtIntrNum|41
-  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerHypIntrNum|42
+  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerLegacyIntrNum|13
 
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x50041000
   gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x50040100

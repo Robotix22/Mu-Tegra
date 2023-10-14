@@ -41,10 +41,7 @@
   gHardwareInterruptProtocolGuid
 
 [Pcd.common]
-  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerSecIntrNum
-  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerIntrNum
-  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerVirtIntrNum
-  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerHypIntrNum
+  gNvidiaPkgTokenSpaceGuid.PcdTegraTimerLegacyIntrNum
 
 [Depex]
   gHardwareInterruptProtocolGuid
