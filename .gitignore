@@ -4,4 +4,4 @@ BootShim/*.elf
 BootShim/*.bin
 Mu-*.bin
 Platforms/Lenovo/VenusPkg/__pycache__/
-Platforms/Microsoft/sRTPkg/__pycache__/
+Platforms/Microsoft/oemk9ßPkg/__pycache__/

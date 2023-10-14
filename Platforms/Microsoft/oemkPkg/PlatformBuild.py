@@ -31,10 +31,10 @@ class CommonPlatform():
     ''' Common settings for this platform.  Define static data here and use
         for the different parts of stuart
     '''
-    PackagesSupported = ("sRTPkg",)
+    PackagesSupported = ("oemkPkg",)
     ArchSupported = ("ARM",)
     TargetsSupported = ("DEBUG", "RELEASE")
-    Scopes = ('sRT', 'gcc_ARM_linux', 'edk2-build')
+    Scopes = ('oemk', 'gcc_ARM_linux', 'edk2-build')
     WorkspaceRoot = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     PackagesPath = (
         "Platforms/Microsoft",
@@ -130,10 +130,10 @@ class SettingsManager(UpdateSettingsManager, SetupSettingsManager, PrEvalSetting
 
         The tuple should be (<workspace relative path to dsc file>, <input dictionary of dsc key value pairs>)
         '''
-        return ("sRTPkg/sRT.dsc", {})
+        return ("oemkPkg/oemk.dsc", {})
 
     def GetName(self):
-        return "sRT"
+        return "oemk"
 
     def GetPackagesPath(self):
         ''' Return a list of paths that should be mapped as edk2 PackagesPath '''
@@ -165,7 +165,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
             "TARGET_ARCH", args.build_arch.upper(), "From CmdLine")
 
         shell_environment.GetBuildVars().SetValue(
-            "ACTIVE_PLATFORM", "sRTPkg/sRT.dsc", "From CmdLine")
+            "ACTIVE_PLATFORM", "oemkPkg/oemk.dsc", "From CmdLine")
 
 
     def GetWorkspaceRoot(self):
@@ -188,7 +188,7 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
     def GetName(self):
         ''' Get the name of the repo, platform, or product being build '''
         ''' Used for naming the log file, among others '''
-        return "sRTPkg"
+        return "oemkPkg"
 
     def GetLoggingLevel(self, loggerType):
         ''' Get the logging level for a given type
@@ -202,8 +202,8 @@ class PlatformBuilder( UefiBuilder, BuildSettingsManager):
 
     def SetPlatformEnv(self):
         logging.debug("PlatformBuilder SetPlatformEnv")
-        self.env.SetValue("PRODUCT_NAME", "sRT", "Platform Hardcoded")
-        self.env.SetValue("ACTIVE_PLATFORM", "sRTPkg/sRT.dsc", "Platform Hardcoded")
+        self.env.SetValue("PRODUCT_NAME", "oemk", "Platform Hardcoded")
+        self.env.SetValue("ACTIVE_PLATFORM", "oemkPkg/oemk.dsc", "Platform Hardcoded")
         self.env.SetValue("TARGET_ARCH", "ARM", "Platform Hardcoded")
         self.env.SetValue("TOOL_CHAIN_TAG", self.env.GetValue("TOOL_CHAIN_TAG"), "Default")
         self.env.SetValue("BUILDREPORTING", "TRUE", "Enabling build report")

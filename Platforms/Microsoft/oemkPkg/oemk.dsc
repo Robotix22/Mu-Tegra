@@ -15,15 +15,15 @@
 #
 ################################################################################
 [Defines]
-  PLATFORM_NAME                  = sRT
+  PLATFORM_NAME                  = oemk
   PLATFORM_GUID                  = b4dcb236-a5f5-411d-91f4-e446d4a8d2e8
   PLATFORM_VERSION               = 0.1
   DSC_SPECIFICATION              = 0x00010005
-  OUTPUT_DIRECTORY               = Build/sRTPkg
+  OUTPUT_DIRECTORY               = Build/oemkPkg
   SUPPORTED_ARCHITECTURES        = ARM
   BUILD_TARGETS                  = DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
-  FLASH_DEFINITION               = sRTPkg/sRT.fdf
+  FLASH_DEFINITION               = oemkPkg/oemk.fdf
 
   # 0 = T30
   # 1 = T30L
@@ -38,7 +38,7 @@
   *_*_*_CC_FLAGS = -DSOC_TYPE=$(SOC_TYPE) -DRAM_MODEL=$(RAM_MODEL)
 
 [LibraryClasses.common]
-  PlatformMemoryMapLib|sRTPkg/Library/PlatformMemoryMapLib/PlatformMemoryMapLib.inf
+  PlatformMemoryMapLib|oemkPkg/Library/PlatformMemoryMapLib/PlatformMemoryMapLib.inf
 
 [PcdsFixedAtBuild.common]
   # Platform-specific
@@ -55,10 +55,9 @@
   # SmBios
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemVendor|"Microsoft Corporation"
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemModel|"Surface RT"
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemRetailModel|"sRT"
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemRetailSku|"Surface_RT_sRT"
+  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemRetailModel|"oemk"
+  gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemRetailSku|"Surface_RT_oemk"
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosBoardModel|"Surface RT"
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|"T30"
 
   # Simple FrameBuffer
   gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferWidth|1366

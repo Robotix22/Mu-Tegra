@@ -1,6 +1,6 @@
 [Defines]
   DEC_SPECIFICATION                   = 0x00010005
-  PACKAGE_NAME                        = sRT
+  PACKAGE_NAME                        = oemk
   PACKAGE_GUID                        = b4dcb236-a5f5-411d-91f4-e446d4a8d2e8
   PACKAGE_VERSION                     = 0.1
 
@@ -8,4 +8,4 @@
   Include                               # Root include for the package
 
 [Guids.common]
-  gsRTTokenSpaceGuid                  = { 0xb4dcb236, 0xa5f5, 0x411d, { 0x91, 0xf4, 0xe4, 0x46, 0xd4, 0xa8, 0xd2, 0xe8 } }
+  goemkTokenSpaceGuid                 = { 0xb4dcb236, 0xa5f5, 0x411d, { 0x91, 0xf4, 0xe4, 0x46, 0xd4, 0xa8, 0xd2, 0xe8 } }
