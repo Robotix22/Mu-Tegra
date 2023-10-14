@@ -92,7 +92,7 @@
 <img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Microsoft-Surface-RT.png" width="480" alt="Preview">
 
 **SoC: Tegra 3** <br />
-**Codename: sRT** <br />
+**Codename: oemk** <br />
 **Maintainer: None** <br />
 **Contibuters: [Robotix22](https://github.com/Robotix22/)** <br />
 **Tester: [wmjb](https://github.com/wmjb/)**
