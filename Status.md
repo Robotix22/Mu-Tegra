@@ -9,8 +9,6 @@
 
 ## IdeaPad Yoga 11
 
-**NOTE: Before BDS Entry, DXE Core Complains about Signature and gets Stuck.**
-
 <img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Lenovo-IdeaPad-Yoga-11.png" width="500" alt="Preview">
 
 **SoC: Tegra 3** <br />
@@ -86,8 +84,6 @@
 </td></tr> </table>
 
 ## Surface RT
-
-**NOTE: Before BDS Entry, DXE Core Complains about Signature and gets Stuck.**
 
 <img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Microsoft-Surface-RT.png" width="480" alt="Preview">
 
