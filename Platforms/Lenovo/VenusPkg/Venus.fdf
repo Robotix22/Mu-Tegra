@@ -118,10 +118,10 @@ READ_LOCK_STATUS   = TRUE
 
   INF DfciPkg/AuthManagerNull/AuthManagerNull.inf
 
-  FILE FREEFORM = PCD(gOemPkgTokenSpaceGuid.PcdLogoFile) {
-    SECTION RAW = VenusPkg/Include/Resources/BootLogo.png
-    SECTION UI = "Logo"
-  }
+  #FILE FREEFORM = PCD(gOemPkgTokenSpaceGuid.PcdLogoFile) {
+  #  SECTION RAW = VenusPkg/Include/Resources/BootLogo.png
+  #  SECTION UI = "Logo"
+  #}
 
   # TODO: Make this Image for every single Device
   FILE FREEFORM = PCD(gMsCorePkgTokenSpaceGuid.PcdRegulatoryGraphicFileGuid) {
