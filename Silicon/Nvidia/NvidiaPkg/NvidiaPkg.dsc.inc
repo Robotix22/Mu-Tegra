@@ -553,6 +553,10 @@
       NULL|SecurityPkg/Library/OemTpm2InitLibNull/OemTpm2InitLibVendorNull.inf
   }
 
+  # Tegra Keyboard
+  NvidiaPkg/Drivers/TegraKeyboardDxe/TegraKeyboardDxe.inf
+  NvidiaPkg/Drivers/GenericTegraKeyboardDeviceDxe/GenericTegraKeyboardDeviceDxe.inf
+
   NvidiaPkg/Drivers/GpioButtons/GpioButtons.inf
   NvidiaPkg/Drivers/SecureBootProvisioningDxe/SecureBootProvisioningDxe.inf
   NvidiaPkg/Drivers/SystemIntegrityPolicyProvisioningDxe/SystemIntegrityPolicyProvisioningDxe.inf

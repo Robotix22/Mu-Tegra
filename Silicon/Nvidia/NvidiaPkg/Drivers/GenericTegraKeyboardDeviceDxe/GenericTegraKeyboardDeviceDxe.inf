@@ -1,0 +1,29 @@
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = GenericTegraKeyboardDeviceDxe
+  FILE_GUID                      = 2dcc48ca-8c18-4eaf-93b0-5bb8327adcaa
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = TegraKeyboardDeviceDxeInitialize
+
+[Sources.common]
+  GenericTegraKeyboardDevice.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  NvidiaPkg/NvidiaPkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  DebugLib
+  TegraKeyboardDeviceImplLib
+
+[Protocols]
+  gTegraKeyboardDeviceProtocolGuid
+  gEfiDevicePathProtocolGuid
+
+[Depex]
+  TRUE

@@ -39,6 +39,7 @@
 
 [LibraryClasses.common]
   PlatformMemoryMapLib|VenusPkg/Library/PlatformMemoryMapLib/PlatformMemoryMapLib.inf
+  TegraKeyboardDeviceImplLib|VenusPkg/Library/TegraKeyboardDeviceImplLib/TegraKeyboardDeviceImplLib.inf
 
 [PcdsFixedAtBuild.common]
   # Platform-specific

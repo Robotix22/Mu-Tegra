@@ -27,7 +27,11 @@
   INF FatPkg/EnhancedFatDxe/Fat.inf
   INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
   INF MdeModulePkg/Universal/FvSimpleFileSystemDxe/FvSimpleFileSystemDxe.inf
+
   INF NvidiaPkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
+  INF NvidiaPkg/Drivers/TegraKeyboardDxe/TegraKeyboardDxe.inf
+  INF NvidiaPkg/Drivers/GenericTegraKeyboardDeviceDxe/GenericTegraKeyboardDeviceDxe.inf
+
   INF MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
   INF MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
   INF MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf

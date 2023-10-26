@@ -1,0 +1,58 @@
+## @file
+# Keyboard Driver.
+#
+# Keyboard Driver for UEFI. The keyboard type implemented follows IBM
+# compatible PS2 protocol using Scan Code Set 1.
+#
+# Copyright (c) 2006 - 2016, Intel Corporation. All rights reserved.<BR>
+#
+# This program and the accompanying materials
+# are licensed and made available under the terms and conditions of the BSD License
+# which accompanies this distribution.  The full text of the license may be found at
+# http://opensource.org/licenses/bsd-license.php
+#
+# THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+# WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+#
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = TegraKeyboardDxe
+  FILE_GUID                      = b112ad46-5986-4e5b-98ea-af7451cf486e
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitializeKeyboard
+
+[Sources]
+  ComponentName.c
+  TegraKeyboard.h
+  TegraKeyboardController.c
+  TegraKeyboardTextIn.c
+  TegraKeyboard.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  NvidiaPkg/NvidiaPkg.dec
+
+[LibraryClasses]
+  MemoryAllocationLib
+  UefiRuntimeServicesTableLib
+  DebugLib
+  DevicePathLib
+  UefiBootServicesTableLib
+  UefiLib
+  UefiDriverEntryPoint
+  BaseLib
+  BaseMemoryLib
+  TimerLib
+  PcdLib
+  IoLib
+
+[Protocols]
+  gEfiSimpleTextInProtocolGuid                  ## BY_START
+  gEfiSimpleTextInputExProtocolGuid             ## BY_START
+  gTegraKeyboardDeviceProtocolGuid
+  gEfiDevicePathProtocolGuid
