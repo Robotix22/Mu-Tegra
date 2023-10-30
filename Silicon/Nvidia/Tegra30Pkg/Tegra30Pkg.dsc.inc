@@ -41,7 +41,7 @@
 [LibraryClasses.common]
   PlatformPeiLib|Tegra30Pkg/Library/PlatformPeiLib/PlatformPeiLib.inf
   PlatformPrePiLib|Tegra30Pkg/Library/PlatformPrePiLib/PlatformPrePiLib.inf
-  TegraClockLib|Tegra30Pkg/Library/TegraClockLib/TegraClockLib.inf
+  TegraClockLib|Tegra30Pkg/GPLLibrary/TegraClockLib/TegraClockLib.inf
 
 [Components.common]
   Tegra30Pkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf

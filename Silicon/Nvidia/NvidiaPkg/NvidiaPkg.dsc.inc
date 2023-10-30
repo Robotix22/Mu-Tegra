@@ -266,7 +266,7 @@
   ArmPlatformLib|NvidiaPkg/Library/ArmPlatformLib/ArmPlatformLib.inf
 
 !if $(USE_TEGRA_TIMER) == 1
-  TimerLib|NvidiaPkg/Library/TegraTimerLib/TegraTimerLib.inf
+  TimerLib|NvidiaPkg/GPLLibrary/TegraTimerLib/TegraTimerLib.inf
 !else
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
 !endif
@@ -445,7 +445,7 @@
   # Processor Core Services
   ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
 !if $(USE_TEGRA_TIMER) == 1
-  NvidiaPkg/Drivers/TegraTimerDxe/TegraTimerDxe.inf
+  NvidiaPkg/GPLDrivers/TegraTimerDxe/TegraTimerDxe.inf
 !else
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 !endif

@@ -13,7 +13,7 @@ APRIORI DXE {
 
     # Core Drivers
     INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
-    INF NvidiaPkg/Drivers/TegraTimerDxe/TegraTimerDxe.inf
+    INF NvidiaPkg/GPLDrivers/TegraTimerDxe/TegraTimerDxe.inf
 
     INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
     INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf

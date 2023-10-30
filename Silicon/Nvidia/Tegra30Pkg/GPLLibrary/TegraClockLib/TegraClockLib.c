@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010-2019, NVIDIA CORPORATION.  All rights reserved.
  *
- * SPDX-License-Identifier: BSD-2-Clause-Patent
+ * SPDX-License-Identifier: GPL-2.0
  */
 #include <Library/UefiLib.h>
 #include <Library/DebugLib.h>

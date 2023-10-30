@@ -1,0 +1,2 @@
+URL:    https://github.com/Open-Surface-RT/grate-linux
+BRANCH: lenovo-ideapad-yoga-11

@@ -1,0 +1,2 @@
+URL:    https://github.com/Open-Surface-RT/u-boot
+BRANCH: lenovo-ideapad-yoga-11

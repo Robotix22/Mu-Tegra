@@ -12,12 +12,9 @@
 
 [Packages]
   MdePkg/MdePkg.dec
-  ArmPkg/ArmPkg.dec
   NvidiaPkg/NvidiaPkg.dec
 
 [LibraryClasses]
   UefiLib
-  TimerLib
   IoLib
-  PcdLib
   DebugLib

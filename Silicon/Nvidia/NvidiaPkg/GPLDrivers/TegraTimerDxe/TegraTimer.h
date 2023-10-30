@@ -3,7 +3,7 @@
 
   Copyright (C) 2022 Svyatoslav Ryhel <clamor95@gmail.com>
 
-  SPDX-License-Identifier: BSD-2-Clause-Patent
+  SPDX-License-Identifier: GPL-2.0+
 
 **/
 #ifndef _TEGRA_TIMER_H_

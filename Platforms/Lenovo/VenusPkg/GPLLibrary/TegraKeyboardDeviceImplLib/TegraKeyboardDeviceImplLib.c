@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2009-2011, NVIDIA Corporation.
  *
- * SPDX-License-Identifier: BSD-2-Clause-Patent
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 #include <Uefi.h>
 

@@ -4,7 +4,7 @@
   Copyright (c) 2011 - 2021, Arm Limited. All rights reserved.<BR>
   Copyright (C) 2022 Svyatoslav Ryhel <clamor95@gmail.com>
 
-  SPDX-License-Identifier: BSD-2-Clause-Patent
+  SPDX-License-Identifier: GPL-2.0+
 
 **/
 #ifndef _TEGRA_TIMER_LIB_H_
