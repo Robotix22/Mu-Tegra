@@ -24,4 +24,5 @@ Many Thanks to the [OpenRT Comunity](https://openrt.gitbook.io/open-surfacert/) 
 
 ## License
 
-All code is licensed under BSD 2-Clause.
+All code except drivers in `GPLDrivers` and Librarys in `GPLLibrary` directory are licensed under BSD 2-Clause. <br />
+GPL Drivers/Librarys are licensed under GPLv2 license.
