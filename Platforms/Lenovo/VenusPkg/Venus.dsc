@@ -65,6 +65,10 @@
   gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferHeight|768
   gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp|32
 
+[Components.common]
+  NvidiaPkg/Drivers/TegraKeyboardDxe/TegraKeyboardDxe.inf
+  NvidiaPkg/Drivers/GenericTegraKeyboardDeviceDxe/GenericTegraKeyboardDeviceDxe.inf
+
 [PcdsDynamicDefault.common]
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|1366
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|768

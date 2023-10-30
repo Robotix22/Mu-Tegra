@@ -8,172 +8,79 @@
 #include <Uefi.h>
 
 #include <Library/BaseMemoryLib.h>
-#include <Library/BitmapLib.h>
 #include <Library/TegraKeyboardDeviceImplLib.h>
 #include <Library/UefiLib.h>
-#include <Library/PcdLib.h>
 #include <Library/IoLib.h>
-#include <Library/DebugLib.h>
 
 #include <Protocol/TegraKeyboardDevice.h>
 
-#define KBC_MAX_KPENT 8
+// KBC Registers
+#define KBC_BASE_ADDR               0x7000E200
+#define KBC_MAX_KPENT               8
+#define KBC_KP_ENT0_0               0x30
+#define KBC_CONTROL_FIFO_CNT_INT_EN (1 << 3)
+#define KBC_INT_0                   0x4
 
-typedef struct {
-  KEY_CONTEXT EfiKeyContext;
-  UINT8       Row;           // Row Number    (0 = First)
-  UINT8       Col;           // Column Number (0 = First)
-  UINT8       Valid;         // 1 If Valid, 0 If Invalid
-} KEY_CONTEXT_PRIVATE;
+// Scan Code Key Map
+STATIC UINT16 KeyMapScanCode[16][8] = {
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {SCAN_F2, SCAN_F1, SCAN_ESC, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, SCAN_F11, SCAN_F10, 0, 0, 0, 0, SCAN_DOWN},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {SCAN_F7, SCAN_F6, SCAN_F5, 0, 0, 0, 0, 0},
+  {SCAN_F8, SCAN_F9, 0, 0, 0, SCAN_LEFT, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, SCAN_UP},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, SCAN_DELETE, SCAN_PAGE_UP, SCAN_INSERT, SCAN_F12, SCAN_PAGE_DOWN, SCAN_RIGHT}
+};
 
-UINTN gBitmapScanCodes[BITMAP_NUM_WORDS(0x18)]    = {0};
-UINTN gBitmapUnicodeChars[BITMAP_NUM_WORDS(0x7f)] = {0};
+// Unicode Char Key Map
+STATIC CHAR16 KeyMapUnicodeChar[16][8] = {
+  {0, CHAR_TAB, '`', '1', 'q', 'a', 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, '3', 'e', 'd', 'c', ' '},
+  {0, 0, 0, '2', 'w', 's', 'x', 'z'},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {'g', 't', '5', '4', 'r', 'f', 'v', 'b'},
+  {'h', 'y', '6', '7', 'u', 'j', 'm', 'n'},
+  {0, 0, 0, '9', 'o', 'l', '.', 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, '8', 'i', 'k', ',', 0},
+  {0, 0, '\\', 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {'-', 0, '0', 'p', 0, ';', '/', 0},
+  {0, 0, '=', CHAR_BACKSPACE, 0, 0, 0, CHAR_CARRIAGE_RETURN},
+  {0, 0, 0, 0, 0, 0, 0, 0}
+};
 
-#define MS2NS(ms) (((UINT64)(ms)) * 1000000ULL)
-
-STATIC
-inline
 VOID
-KeySetState(UINT16 ScanCode, CHAR16 UnicodeChar, BOOLEAN Value)
+SetFifoInterrupt(BOOLEAN Enable)
 {
-  if (ScanCode && ScanCode < 0x18) {
-    if (Value) {
-      BitmapSet(gBitmapScanCodes, ScanCode);
-    } else {
-      BitmapClear(gBitmapScanCodes, ScanCode);
-    }
+  UINT32 Value;
+
+  Value = MmioRead32(KBC_BASE_ADDR);
+
+  if (Enable) {
+    Value |= KBC_CONTROL_FIFO_CNT_INT_EN;
+  } else {
+    Value &= ~KBC_CONTROL_FIFO_CNT_INT_EN;
   }
 
-  if (UnicodeChar && UnicodeChar < 0x7f) {
-    if (Value) {
-      BitmapSet(gBitmapUnicodeChars, ScanCode);
-    } else {
-      BitmapClear(gBitmapUnicodeChars, ScanCode);
-    }
-  }
-}
-
-STATIC
-inline
-VOID
-LibKeyInitializeKeyContext(KEY_CONTEXT *Context)
-{
-  SetMem(&Context->KeyData, sizeof(Context->KeyData), 0);
-  Context->Time      = 0;
-  Context->State     = KEYSTATE_RELEASED;
-  Context->Repeat    = FALSE;
-  Context->Longpress = FALSE;
-}
-
-STATIC
-inline
-VOID
-LibKeyUpdateKeyStatus(
-  KEY_CONTEXT         *Context,
-  KEYBOARD_RETURN_API *KeyboardReturnApi,
-  BOOLEAN              IsPressed,
-  UINT64               Delta)
-{
-  // keep track of the actual state
-  KeySetState(Context->KeyData.Key.ScanCode, Context->KeyData.Key.UnicodeChar, IsPressed);
-
-  // update key time
-  Context->Time += Delta;
-
-  switch (Context->State) {
-    case KEYSTATE_RELEASED:
-      if (IsPressed) {
-        // change to pressed
-        Context->Time  = 0;
-        Context->State = KEYSTATE_PRESSED;
-      }
-
-      break;
-  
-    case KEYSTATE_PRESSED:
-      if (IsPressed) {
-        // keyrepeat
-        if (Context->Repeat && Context->Time >= MS2NS(100)) {
-          KeyboardReturnApi->PushEfikeyBufTail(KeyboardReturnApi, &Context->KeyData);
-          Context->Time   = 0;
-          Context->Repeat = TRUE;
-        } else if (!Context->Longpress && Context->Time >= MS2NS(500)) {
-          KeyboardReturnApi->PushEfikeyBufTail(KeyboardReturnApi, &Context->KeyData);
-          Context->Time   = 0;
-          Context->Repeat = TRUE;
-        }
-
-        Context->Longpress = TRUE;
-      } else {
-        if (!Context->Longpress) {
-          // we supressed down, so report it now
-          KeyboardReturnApi->PushEfikeyBufTail(KeyboardReturnApi, &Context->KeyData);
-          Context->State = KEYSTATE_LONGPRESS_RELEASE;
-        } else if (Context->Time >= MS2NS(10)) {
-          // we reported another key already
-          Context->Time      = 0;
-          Context->Repeat    = FALSE;
-          Context->Longpress = FALSE;
-          Context->State     = KEYSTATE_RELEASED;
-        }
-      }
-
-      break;
-
-    case KEYSTATE_LONGPRESS_RELEASE:
-      // change to released
-      Context->Time      = 0;
-      Context->Repeat    = FALSE;
-      Context->Longpress = FALSE;
-      Context->State     = KEYSTATE_RELEASED;
-      break;
-
-    default:
-      ASSERT(FALSE);
-      break;
-  }
-}
-
-STATIC KEY_CONTEXT_PRIVATE KeyContextTAB;
-STATIC KEY_CONTEXT_PRIVATE *KeyList[] = { &KeyContextTAB };
-
-STATIC
-VOID
-KeyboardInitializeKeyContextPrivate(KEY_CONTEXT_PRIVATE *Context)
-{
-  Context->Valid = 0;
-  Context->Row   = 0;
-  Context->Col   = 0;
-}
-
-STATIC
-KEY_CONTEXT_PRIVATE *KeyboardKeyCodeToKeyContext(UINT32 KeyCode)
-{
-  if (KeyCode == 114) {
-    return &KeyContextTAB;
-  }
-
-  return NULL;
+  MmioWrite32(KBC_BASE_ADDR, Value);
 }
 
 RETURN_STATUS
 EFIAPI
 TegraKeyboardDeviceImplConstructor(VOID)
 {
-  UINTN                Index;
-  KEY_CONTEXT_PRIVATE *StaticContext;
-
-  // Reset all keys
-  for (Index = 0; Index < (sizeof(KeyList) / sizeof(KeyList[0])); Index++) {
-    KeyboardInitializeKeyContextPrivate(KeyList[Index]);
-  }
-
-  // Configure keys
-  /// TAB Key
-  StaticContext              = KeyboardKeyCodeToKeyContext(114);
-  StaticContext->Row         = 0x0;
-  StaticContext->Col         = 0x1;
-
   return RETURN_SUCCESS;
 }
 
@@ -181,9 +88,6 @@ EFI_STATUS
 EFIAPI
 TegraKeyboardDeviceImplReset(KEYBOARD_DEVICE_PROTOCOL *This)
 {
-  LibKeyInitializeKeyContext(&KeyContextESC.EfiKeyContext);
-  KeyContextESC.EfiKeyContext.KeyData.Key.UnicodeChar = 0xd;  // Enter
-
   return EFI_SUCCESS;
 }
 
@@ -193,17 +97,41 @@ TegraKeyboardDeviceImplGetKeys(
   KEYBOARD_RETURN_API      *KeyboardReturnApi,
   UINT64                    Delta)
 {
-  BOOLEAN IsPressed;
-  UINTN   Index;
+  UINT32 kp_ent;
+  UINT32 Value;
+  UINT32 i;
+  UINT32 Col;
+  UINT32 Row;
 
-  for (Index = 0; Index < (sizeof(KeyList) / sizeof(KeyList[0])); Index++) {
-    KEY_CONTEXT_PRIVATE *Context = KeyList[Index];
+  Value = (MmioRead32(KBC_BASE_ADDR + KBC_INT_0) >> 4) & 0xf;
 
-    IsPressed = FALSE;
+  if (Value) {
+    for (i = 0; i < KBC_MAX_KPENT; i++) {
+      // Get next word
+      if ((i % 4) == 0) {
+        kp_ent = MmioRead32 (KBC_BASE_ADDR + KBC_KP_ENT0_0 + i);
+      }
 
-    // TODO: Add Stuff
-  
-    LibKeyUpdateKeyStatus(&Context->EfiKeyContext, KeyboardReturnApi, IsPressed, Delta);
+      if (kp_ent & 0x80) {
+        Col = kp_ent & 0x7;
+        Row = (kp_ent >> 3) & 0xf;
+
+        // Update Key Status
+        if (KeyMapUnicodeChar[Row][Col] != 0) {
+          EFI_KEY_DATA KeyPressed = {.Key = {.UnicodeChar = KeyMapUnicodeChar[Row][Col],}};
+          KeyboardReturnApi->PushEfikeyBufTail(KeyboardReturnApi, &KeyPressed);
+        } else if (KeyMapScanCode[Row][Col] != 0) {
+          EFI_KEY_DATA KeyPressed = {.Key = {.ScanCode = KeyMapUnicodeChar[Row][Col],}};
+          KeyboardReturnApi->PushEfikeyBufTail(KeyboardReturnApi, &KeyPressed);
+        }
+      }
+    }
+
+    // Shift to get next entry
+    kp_ent >>= 8;
+  } else {
+    // Enable Keypress Interrupt
+    SetFifoInterrupt(TRUE);
   }
 
   return EFI_SUCCESS;

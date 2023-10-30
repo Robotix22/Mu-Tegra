@@ -28,7 +28,7 @@
 |Buttons||❌|
 |USB||❌|
 |Mouse Pad||❌|
-|Keyboard||❌|
+|Keyboard|Key Read is still a bit broken|⚠️|
 |SD Card||❌|
 |ACPI||❌|
 |UART||❌|
