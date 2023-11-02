@@ -1,3 +1,15 @@
+[LibraryClasses.ARM]
+  #
+  # An architecture agnostic math library providing reasonable approximations for various functions in software
+  #
+  MathLib|NvidiaPkg/Library/MathLib/MathLib.inf
+
+[LibraryClasses.AARCH64]
+  #
+  # An architecture agnostic math library providing reasonable approximations for various functions in software
+  #
+  MathLib|MsCorePkg/Library/MathLib/MathLib.inf
+
 [LibraryClasses.common]
   #
   # Libraries to support Shell
@@ -154,11 +166,6 @@
   MsNVBootReasonLib|OemPkg/Library/MsNVBootReasonLib/MsNVBootReasonLib.inf
 
   #
-  # An architecture agnostic math library providing reasonable approximations for various functions in software
-  #
-  MathLib|MsCorePkg/Library/MathLib/MathLib.inf
-
-  #
   # This library is for showing the main system boot graphics.
   #
   BootGraphicsLib|NvidiaPkg/Library/BootGraphicsLib/BootGraphicsLib.inf
@@ -304,7 +311,7 @@
   #
   # Produces FORM DISPLAY ENGINE protocol. Handles input, displays strings.
   #
-  #MsGraphicsPkg/DisplayEngineDxe/DisplayEngineDxe.inf
+  MsGraphicsPkg/DisplayEngineDxe/DisplayEngineDxe.inf
   MsGraphicsPkg/MsEarlyGraphics/Dxe/MsEarlyGraphics.inf
 
   MsWheaPkg/HwErrBert/HwErrBert.inf
