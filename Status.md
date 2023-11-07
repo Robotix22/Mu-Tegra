@@ -28,7 +28,7 @@
 |Buttons||❌|
 |USB||❌|
 |Mouse Pad||❌|
-|Keyboard|Key Read is still a bit broken|⚠️|
+|Keyboard|Shift Feature is Missing|⚠️|
 |SD Card||❌|
 |ACPI||❌|
 |UART||❌|
