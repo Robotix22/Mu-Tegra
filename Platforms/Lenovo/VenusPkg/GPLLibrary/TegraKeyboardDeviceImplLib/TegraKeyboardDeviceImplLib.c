@@ -11,14 +11,16 @@
 #include <Library/TegraKeyboardDeviceImplLib.h>
 #include <Library/UefiLib.h>
 #include <Library/IoLib.h>
+#include <Library/TimerLib.h>
 
 #include <Protocol/TegraKeyboardDevice.h>
 
 // KBC Registers
 #define KBC_BASE_ADDR               0x7000E200
 #define KBC_MAX_KPENT               8
+#define KBC_RPT_DLY_0               0x2C
+#define KBC_INIT_DLY_0              0x28
 #define KBC_KP_ENT0_0               0x30
-#define KBC_CONTROL_FIFO_CNT_INT_EN (1 << 3)
 #define KBC_INT_0                   0x4
 
 // Scan Code Key Map
@@ -61,26 +63,14 @@ STATIC CHAR16 KeyMapUnicodeChar[16][8] = {
   {0, 0, 0, 0, 0, 0, 0, 0}
 };
 
-VOID
-SetFifoInterrupt(BOOLEAN Enable)
-{
-  UINT32 Value;
-
-  Value = MmioRead32(KBC_BASE_ADDR);
-
-  if (Enable) {
-    Value |= KBC_CONTROL_FIFO_CNT_INT_EN;
-  } else {
-    Value &= ~KBC_CONTROL_FIFO_CNT_INT_EN;
-  }
-
-  MmioWrite32(KBC_BASE_ADDR, Value);
-}
-
 RETURN_STATUS
 EFIAPI
 TegraKeyboardDeviceImplConstructor(VOID)
 {
+  // Set Hardware Matrix Delay
+  MmioWrite32(KBC_BASE_ADDR + KBC_RPT_DLY_0, 2300);
+  MmioWrite32(KBC_BASE_ADDR + KBC_INIT_DLY_0, 2300);
+
   return RETURN_SUCCESS;
 }
 
@@ -97,41 +87,41 @@ TegraKeyboardDeviceImplGetKeys(
   KEYBOARD_RETURN_API      *KeyboardReturnApi,
   UINT64                    Delta)
 {
-  UINT32 kp_ent;
-  UINT32 Value;
-  UINT32 i;
-  UINT32 Col;
-  UINT32 Row;
+  UINT32 kp_ent   = 0;
+  UINT32 fifo_cnt = 0;
+  UINT32 i        = 0;
+  UINT32 Col      = 0;
+  UINT32 Row      = 0;
 
-  Value = (MmioRead32(KBC_BASE_ADDR + KBC_INT_0) >> 4) & 0xf;
+  fifo_cnt = (MmioRead32(KBC_BASE_ADDR + KBC_INT_0) >> 4) & 0xf;
 
-  if (Value) {
+  if (fifo_cnt) {
     for (i = 0; i < KBC_MAX_KPENT; i++) {
       // Get next word
       if ((i % 4) == 0) {
         kp_ent = MmioRead32 (KBC_BASE_ADDR + KBC_KP_ENT0_0 + i);
       }
 
-      if (kp_ent & 0x80) {
+      if (kp_ent % 0x80) {
         Col = kp_ent & 0x7;
         Row = (kp_ent >> 3) & 0xf;
+
+        // Wait a Bit before Processing Key
+        MicroSecondDelay(160);
 
         // Update Key Status
         if (KeyMapUnicodeChar[Row][Col] != 0) {
           EFI_KEY_DATA KeyPressed = {.Key = {.UnicodeChar = KeyMapUnicodeChar[Row][Col],}};
           KeyboardReturnApi->PushEfikeyBufTail(KeyboardReturnApi, &KeyPressed);
         } else if (KeyMapScanCode[Row][Col] != 0) {
-          EFI_KEY_DATA KeyPressed = {.Key = {.ScanCode = KeyMapUnicodeChar[Row][Col],}};
+          EFI_KEY_DATA KeyPressed = {.Key = {.ScanCode = KeyMapScanCode[Row][Col],}};
           KeyboardReturnApi->PushEfikeyBufTail(KeyboardReturnApi, &KeyPressed);
         }
       }
-    }
 
-    // Shift to get next entry
-    kp_ent >>= 8;
-  } else {
-    // Enable Keypress Interrupt
-    SetFifoInterrupt(TRUE);
+      // Shift to get next entry
+      kp_ent >>= 8;
+    }
   }
 
   return EFI_SUCCESS;
