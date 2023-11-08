@@ -21,6 +21,7 @@
 #define KBC_RPT_DLY_0               0x2C
 #define KBC_INIT_DLY_0              0x28
 #define KBC_KP_ENT0_0               0x30
+#define KBC_KP_ENT1_0               0x34                 
 #define KBC_INT_0                   0x4
 
 // Scan Code Key Map
@@ -63,13 +64,35 @@ STATIC CHAR16 KeyMapUnicodeChar[16][8] = {
   {0, 0, 0, 0, 0, 0, 0, 0}
 };
 
+/*
+// Unicode Char Key Map (Shift State)
+STATIC CHAR16 KeyMapUnicodeCharShift[16][8] = {
+  {0, CHAR_TAB, '~', '!', 'Q', 'A', 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, '#', 'E', 'D', 'C', ' '},
+  {0, 0, 0, '@', 'W', 'S', 'X', 'Z'},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {'G', 'T', '%', '$', 'R', 'F', 'V', 'B'},
+  {'H', 'Y', '^', '&', 'U', 'J', 'M', 'N'},
+  {0, 0, 0, '(', 'O', 'L', '>', 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, '*', 'I', 'K', '<', 0},
+  {0, 0, '|', 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 0, 0, 0, 0, 0, 0, 0},
+  {'_', 0, ')', 'P', 0, ':', '?', 0},
+  {0, 0, '+', CHAR_BACKSPACE, 0, 0, '"', CHAR_CARRIAGE_RETURN},
+  {0, 0, 0, 0, 0, 0, 0, 0}
+};
+*/
+
 RETURN_STATUS
 EFIAPI
 TegraKeyboardDeviceImplConstructor(VOID)
 {
   // Set Hardware Matrix Delay
-  MmioWrite32(KBC_BASE_ADDR + KBC_RPT_DLY_0, 2300);
-  MmioWrite32(KBC_BASE_ADDR + KBC_INIT_DLY_0, 2300);
+  MmioWrite32(KBC_BASE_ADDR + KBC_RPT_DLY_0, 1200);
+  MmioWrite32(KBC_BASE_ADDR + KBC_INIT_DLY_0, 1200);
 
   return RETURN_SUCCESS;
 }
@@ -87,7 +110,8 @@ TegraKeyboardDeviceImplGetKeys(
   KEYBOARD_RETURN_API      *KeyboardReturnApi,
   UINT64                    Delta)
 {
-  UINT32 kp_ent   = 0;
+  UINT32 kp_ent0  = 0;
+  UINT32 kp_ent1  = 0;
   UINT32 fifo_cnt = 0;
   UINT32 i        = 0;
   UINT32 Col      = 0;
@@ -99,15 +123,18 @@ TegraKeyboardDeviceImplGetKeys(
     for (i = 0; i < KBC_MAX_KPENT; i++) {
       // Get next word
       if ((i % 4) == 0) {
-        kp_ent = MmioRead32 (KBC_BASE_ADDR + KBC_KP_ENT0_0 + i);
+        kp_ent0 = MmioRead32 (KBC_BASE_ADDR + KBC_KP_ENT0_0 + i);
+        kp_ent1 = MmioRead32 (KBC_BASE_ADDR + KBC_KP_ENT1_0);        // This Read Emptys Fifo Head
       }
 
-      if (kp_ent % 0x80) {
-        Col = kp_ent & 0x7;
-        Row = (kp_ent >> 3) & 0xf;
+      if (kp_ent0 & 0x80) {
+        Col = kp_ent0 & 0x7;
+        Row = (kp_ent0 >> 3) & 0xf;
 
         // Wait a Bit before Processing Key
-        MicroSecondDelay(160);
+        MicroSecondDelay(80000);
+
+        // TODO: Add Shift and Caps Lock Check Here.
 
         // Update Key Status
         if (KeyMapUnicodeChar[Row][Col] != 0) {
@@ -120,8 +147,10 @@ TegraKeyboardDeviceImplGetKeys(
       }
 
       // Shift to get next entry
-      kp_ent >>= 8;
+      kp_ent0 >>= 8;
     }
+  } else {
+    // TODO: Add Gpio Side Buttons here.
   }
 
   return EFI_SUCCESS;
