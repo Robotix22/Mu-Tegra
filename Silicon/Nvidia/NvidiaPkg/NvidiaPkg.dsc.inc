@@ -354,9 +354,6 @@
   # ARM Architectural Libraries
   ArmGicArchLib|ArmPkg/Library/ArmGicArchLib/ArmGicArchLib.inf
 
-  MallocLib|NvidiaPkg/Library/MallocLib/MallocLib.inf
-  LodePngLib|NvidiaPkg/Library/LodePngLib/LodePngLib.inf
-
   DeviceSpecificBusInfoLib|MsCorePkg/Library/DeviceSpecificBusInfoLibNull/DeviceSpecificBusInfoLibNull.inf
   ExceptionPersistenceLib|MdeModulePkg/Library/BaseExceptionPersistenceLibNull/BaseExceptionPersistenceLibNull.inf
 

@@ -24,13 +24,18 @@
 
   INF NvidiaPkg/Applications/DfciMenu/DfciMenu.inf
 
+  FILE FREEFORM = PCD(gOemPkgTokenSpaceGuid.PcdLogoFile) {
+    SECTION RAW = OemPkg/FrontPage/Resources/BootLogo.bmp
+    SECTION UI = "Logo"
+  }
+
   FILE APPLICATION = PCD(gPcBdsPkgTokenSpaceGuid.PcdShellFile) {
     SECTION PE32 = $(OUTPUT_DIRECTORY)/$(TARGET)_$(TOOL_CHAIN_TAG)/ARM/Shell.efi
     SECTION UI = "Shell"
   }
 
   FILE FREEFORM = PCD(gNvidiaPkgTokenSpaceGuid.PcdNoBootOSFile) {
-    SECTION RAW = NvidiaPkg/Include/Resources/NoBootOS.png
+    SECTION RAW = NvidiaPkg/Include/Resources/NoBootOS.bmp
   }
 
   FILE FREEFORM = PCD(gOemPkgTokenSpaceGuid.PcdFrontPageLogoFile) {
