@@ -18,3 +18,4 @@
   UefiLib
   IoLib
   DebugLib
+  TimerLib

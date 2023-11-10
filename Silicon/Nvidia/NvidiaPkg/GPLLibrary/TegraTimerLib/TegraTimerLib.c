@@ -39,22 +39,22 @@ MicroSecondDelay (
   IN      UINTN  MicroSeconds
   )
 {
-  UINT64  TimerTicks64;
-  UINT64  SystemCounterVal;
+  UINT32  TimerTicks32;
+  UINT32  SystemCounterVal;
 
   // Calculate counter ticks that represent requested delay:
   //  = MicroSeconds x TICKS_PER_MICRO_SEC
   //  = MicroSeconds x Frequency.10^-6
-  TimerTicks64 = DivU64x32 (MultU64x32 (MicroSeconds, TEGRA_TIMER_RATE), 1000000U);
+  TimerTicks32 = DivU64x32 (MultU64x32 (MicroSeconds, TEGRA_TIMER_RATE), 1000000U);
 
   // Read System Counter value
-  SystemCounterVal = MmioRead64 (TEGRA_TIMER_USEC_CNTR);
+  SystemCounterVal = MmioRead32 (TEGRA_TIMER_USEC_CNTR);
 
-  TimerTicks64 += SystemCounterVal;
+  TimerTicks32 += SystemCounterVal;
 
   // Wait until delay count expires.
-  while (SystemCounterVal < TimerTicks64) {
-    SystemCounterVal = MmioRead64 (TEGRA_TIMER_USEC_CNTR);
+  while (SystemCounterVal < TimerTicks32) {
+    SystemCounterVal = MmioRead32 (TEGRA_TIMER_USEC_CNTR);
   }
 
   return MicroSeconds;
