@@ -1,0 +1,54 @@
+# Copyright (c) 2019 - 2020, Bingxing Wang and other project authors. All rights reserved.<BR>
+# Copyright (c) 2021 - 2021, Leander Wollersberger. All rights reserved.<BR>
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = UEFILoader
+  FILE_GUID                      = 81ddf479-dde8-46f2-a939-cb3a90b007f4
+  MODULE_TYPE                    = UEFI_APPLICATION
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = UEFILoaderMain
+
+[Sources]
+  UEFILoader.c
+  Console.c
+  Exploit.c
+  Memory.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  #ArmPlatformPkg/ArmPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  UefiApplicationEntryPoint
+  ArmLib
+  ArmSmcLib
+  #DevicePathLib
+  BaseLib
+  PcdLib
+  MemoryAllocationLib
+  IoLib
+  UefiLib
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  BaseMemoryLib
+  DebugLib
+  PrintLib
+  ArmSoftFloatLib
+
+[Guids]
+  gEfiGlobalVariableGuid                        ## CONSUMES
+  gEfiSmbiosTableGuid                           ## CONSUMES
+  gEfiFileInfoGuid
+
+[Protocols]
+  gEfiSimpleTextOutProtocolGuid                 ## CONSUMES
+  gEfiDevicePathProtocolGuid                    ## CONSUMES
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdGicRedistributorsBase

@@ -5,3 +5,4 @@ BootShim/*.bin
 Mu-*.bin
 Platforms/Lenovo/VenusPkg/__pycache__/
 Platforms/Microsoft/oemk9ßPkg/__pycache__/
+UEFILoader.efi

@@ -77,6 +77,14 @@ stuart_build -c "Platforms/${TARGET_DEVICE_VENDOR}/${TARGET_DEVICE}Pkg/PlatformB
 # Copy UEFI FD File to root as Payload
 cat ./BootShim/BootShim.bin "./Build/${TARGET_DEVICE}Pkg/${_TARGET_BUILD_MODE}_CLANG38/FV/${TARGET_DEVICE^^}_UEFI.fd" > "./Mu-${TARGET_DEVICE}.bin"||_error "\nFailed to Copy UEFI Payload!\n"
 
+if [ ${TARGET_SOC} == "Tegra30" ]; then
+	# Delete Old File
+	rm UEFILoader.efi &> /dev/null
+
+	# Copy UEFI Loader Application to root
+	cp "./Build/${TARGET_DEVICE}Pkg/${_TARGET_BUILD_MODE}_CLANG38/ARM/UEFILoader.efi" ./UEFILoader.efi||exit 1
+fi
+
 if [[ ${STATUS} != "STABLE" ]]; then
 	if [[ ${STATUS} == "UNSTABLE" ]];
 	then _warn "\n${TARGET_DEVICE} is marked as Unstable.\nThings are expected to be broken.\n"

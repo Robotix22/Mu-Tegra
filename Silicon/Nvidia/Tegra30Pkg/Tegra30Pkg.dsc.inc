@@ -45,5 +45,14 @@
 
 [Components.common]
   Tegra30Pkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf
+  Tegra30Pkg/Applications/UEFILoader/UEFILoader.inf {
+    <LibraryClasses>
+    !if $(TARGET) == DEBUG
+      DebugLib|MdePkg/Library/UefiDebugLibConOut/UefiDebugLibConOut.inf
+    !else
+      DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+      SerialPortLib|MdePkg/Library/BaseSerialPortLibNull/BaseSerialPortLibNull.inf
+    !endif
+  }
 
 !include NvidiaPkg/NvidiaPkg.dsc.inc
