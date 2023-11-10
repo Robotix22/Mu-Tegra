@@ -13,7 +13,7 @@
 
 // Tegra Clock Registers
 #define TEGRA_OSC_CLK_ENB_L_SET		(NV_PA_CLK_RST_BASE + 0x320)
-#define TEGRA_OSC_SET_CLK_ENB_TMR	0x5
+#define TEGRA_OSC_SET_CLK_ENB_TMR	(1 << 5)
 
 // Tegra Timer Base Address
 #define TIMER_TMR1_TMR_PTV_0      0x60005000
