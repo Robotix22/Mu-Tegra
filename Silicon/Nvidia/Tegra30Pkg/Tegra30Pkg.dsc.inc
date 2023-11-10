@@ -24,16 +24,16 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemRevision|0x00000030
   gEmbeddedTokenSpaceGuid.PcdInterruptBaseAddress|0x50041000
 
-#if SOC_TYPE == 0
+!if $(SOC_TYPE) == 0
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorModel|"Tegra (TM) 3 @ 1.50 GHz"
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|"T30"
-#else if SOC_TYPE == 1
+!elseif $(SOC_TYPE) == 1
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorModel|"Tegra (TM) 3 @ 1.30 GHz"
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|"T30L"
-#else if SOC_TYPE == 2
-  gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorModel|"Tegra (R) 3 @ 1.70 GHz"
+!elseif $(SOC_TYPE) == 2
+  gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorModel|"Tegra (TM) 3 @ 1.70 GHz"
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|"T33"
-#endif
+!endif
 
   gArmPlatformTokenSpaceGuid.PcdCoreCount|4                     # Actually 5 Cores
   gArmPlatformTokenSpaceGuid.PcdClusterCount|1
