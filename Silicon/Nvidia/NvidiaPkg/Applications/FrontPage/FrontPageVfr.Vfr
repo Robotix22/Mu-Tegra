@@ -207,31 +207,6 @@ formset
       guid     = GRID_END_OPCODE_GUID,                                           // Custom UI Grid opcode - END
     endguidop;
 
-    text
-      help    = STRING_TOKEN(STR_NULL_STRING),                                   // SPACING
-      text    = STRING_TOKEN(STR_NULL_STRING);                                   //
-    text
-      help    = STRING_TOKEN(STR_NULL_STRING),                                   // SPACING
-      text    = STRING_TOKEN(STR_NULL_STRING);                                   //
-    text
-      help    = STRING_TOKEN(STR_NULL_STRING),                                   // SPACING
-      text    = STRING_TOKEN(STR_NULL_STRING);                                   //
-
-    guidop
-      guid     = GRID_END_OPCODE_GUID,                                           // Custom UI Grid opcode - END
-    endguidop;
-
-    guidop
-      guid     = GRID_START_OPCODE_GUID,                                         // Custom UI Grid opcode - START
-      datatype = UINT32,                                                         //
-      data     = 70,                                                             // Grid cell height in pixels.
-    endguidop;
-        label LABEL_PCINFO_FW_VERSION_TAG_START;                                 // Firmware versions
-        label LABEL_PCINFO_FW_VERSION_TAG_END;                                   //
-    guidop
-      guid     = GRID_END_OPCODE_GUID,                                           // Custom UI Grid opcode - END
-    endguidop;
-
   endform;
 
   /////////////////////////////////////////////////////////////////////////////
@@ -386,6 +361,13 @@ formset
       text    = STRING_TOKEN(STR_FP_RESTART_NOW_BUTTON),                                //
       flags   = INTERACTIVE | RESET_REQUIRED,
       key     = FRONT_PAGE_ACTION_EXIT_FRONTPAGE;
+  endform;
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Form ID 3: Power Off
+  //
+  form formid = FRONT_PAGE_FORM_ID_POWEROFF,                                            // Power Off form
+    title  = STRING_TOKEN(STR_NULL_STRING);                                             // Form title: None
   endform;
 
 endformset;

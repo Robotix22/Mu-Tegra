@@ -25,16 +25,17 @@
   DebugLib
   IoLib
   MemoryMapHelperLib
-  PlatformMemoryMapLib
+  DeviceMemoryMapLib
   PlatformPrePiLib
+  SoCPlatformLib
 
 [Sources.common]
   ArmPlatformLib.c
   ArmPlatformLibMem.c
   InitializationUtils.c
 
-[Sources.Arm]
-  Arm/ArmPlatformHelper.S
+[Sources.AArch64]
+  AArch64/ArmPlatformHelper.S
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
@@ -43,9 +44,7 @@
   gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
   gArmTokenSpaceGuid.PcdArmPrimaryCore
   gArmTokenSpaceGuid.PcdFdSize
-  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferWidth
-  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferHeight
-  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp
+  gArmPlatformTokenSpaceGuid.PcdCoreCount
   gNvidiaPkgTokenSpaceGuid.PcdSmbiosSystemModel
 
 [Ppis]

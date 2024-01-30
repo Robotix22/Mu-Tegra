@@ -3,35 +3,36 @@
 |✅|Working|
 |-|-------|
 |⚠️|**Problematic**|
-|⚙️|**It is being Worked on**|
 |❌|**Not Working**|
 |❔|**Unknown**|
 
-## IdeaPad Yoga 11
+## Active Supported Devices
 
-<img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Lenovo-IdeaPad-Yoga-11.png" width="500" alt="Preview">
+<details>
+<summary><b><strong>Tegra X1/X1+ Devices</strong></b></summary>
 
-**SoC: Tegra 3** <br />
-**Codename: Venus** <br />
+## Nintendo Switch
+
+<img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Nintendo-Switch.png" width="500" alt="Preview">
+
+**Codename: HAC-001** <br />
 **Maintainer: [Robotix22](https://github.com/Robotix22/)** <br />
-**Contibuters: None** <br />
+**Contibuter: None** <br />
 **Tester: [Robotix22](https://github.com/Robotix22/)**
 
 ### UEFI Status
 
 |Feature|Description|State|
 |:------|:----------|:---:|
-|Display||✅|
+|Display||❌|
 |Touchscreen||❌|
-|Clocks||✅|
+|Clocks||❌|
 |eMMC||❌|
-|Buttons||❌|
-|USB||❌|
-|Mouse Pad||❌|
-|Keyboard|Shift Feature is Missing|⚠️|
 |SD Card||❌|
+|Buttons||❌|
+|Joy Cons||❌|
+|USB||❌|
 |ACPI||❌|
-|UART||❌|
 
 ### OS Status
 
@@ -43,84 +44,13 @@
 |:------|:----------|:---:|
 |Boot||❌|
 |eMMC||❌|
-|Buttons||❌|
-|Sensors||❌|
-|Battery||❌|
-|USB||❌|
-|Charging||❌|
-|WLAN||❌|
-|CPU||❌|
-|Touchscreen||❌|
-|Bluetooth||❌|
-|Audio||❌|
-|Mouse Pad||❌|
-|Keyboard||❌|
-|GPU||❌|
-|Display||❌|
-|UART||❌|
-
-</td><td>
-
-|Feature|Description|State|
-|:------|:----------|:---:|
-|Boot||❌|
-|eMMC||❌|
-|Buttons||❌|
-|Sensors||❌|
-|Battery||❌|
-|USB||❌|
-|Charging||❌|
-|WLAN||❌|
-|CPU||❌|
-|Touchscreen||❌|
-|Bluetooth||❌|
-|Audio||❌|
-|Mouse Pad||❌|
-|Keyboard||❌|
-|GPU||❌|
-|Display||❌|
-|UART||❌|
-
-</td></tr> </table>
-
-## Surface RT
-
-<img align="right" src="https://github.com/Robotix22/Mu-Tegra/blob/main/Pictures/Microsoft-Surface-RT.png" width="480" alt="Preview">
-
-**SoC: Tegra 3** <br />
-**Codename: oemk** <br />
-**Maintainer: None** <br />
-**Contibuters: [Robotix22](https://github.com/Robotix22/)** <br />
-**Tester: [wmjb](https://github.com/wmjb/)**
-
-### UEFI Status
-
-|Feature|Description|State|
-|:------|:----------|:---:|
-|Display||✅|
-|Touchscreen||❌|
-|Clocks||✅|
-|eMMC||❌|
-|Buttons||❌|
-|USB||❌|
-|Mouse Pad||❌|
-|Keyboard||❌|
 |SD Card||❌|
-|ACPI||❌|
-|UART||❌|
-
-### OS Status
-
-<table>
-<tr><th>Windows</th><th>Linux</th></tr>
-<tr><td>
-
-|Feature|Description|State|
-|:------|:----------|:---:|
-|Boot||❌|
-|eMMC||❌|
 |Buttons||❌|
-|Sensors||❌|
+|Joy Cons||❌|
+|Light Sensor||❌|
+|Accelerometer Sensor||❌|
+|Gyroscope Sensor||❌|
+|NFC Sensor (Joy Con)||❌|
 |Battery||❌|
 |USB||❌|
 |Charging||❌|
@@ -128,12 +58,11 @@
 |CPU||❌|
 |Touchscreen||❌|
 |Bluetooth||❌|
-|Audio||❌|
-|Mouse Pad||❌|
-|Keyboard||❌|
+|Speakers||❌|
 |GPU||❌|
 |Display||❌|
-|UART||❌|
+|External Display||❌|
+|Vibration (Joy Con)||❌|
 
 </td><td>
 
@@ -141,8 +70,13 @@
 |:------|:----------|:---:|
 |Boot||❌|
 |eMMC||❌|
+|SD Card||❌|
 |Buttons||❌|
-|Sensors||❌|
+|Joy Cons||❌|
+|Light Sensor||❌|
+|Accelerometer Sensor||❌|
+|Gyroscope Sensor||❌|
+|NFC Sensor (Joy Con)||❌|
 |Battery||❌|
 |USB||❌|
 |Charging||❌|
@@ -150,11 +84,17 @@
 |CPU||❌|
 |Touchscreen||❌|
 |Bluetooth||❌|
-|Audio||❌|
-|Mouse Pad||❌|
-|Keyboard||❌|
+|Speakers||❌|
 |GPU||❌|
 |Display||❌|
-|UART||❌|
+|External Display||❌|
+|Vibration (Joy Con)||❌|
 
 </td></tr> </table>
+
+  </summary>
+</details>
+
+## Inactive Supported Devices
+
+<!-- TODO: Add Two other Tegra 3 Devices here. -->

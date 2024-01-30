@@ -1,0 +1,8 @@
+[Defines]
+  DEC_SPECIFICATION                   = 0x00010005
+  PACKAGE_NAME                        = Tegra210Pkg
+  PACKAGE_GUID                        = bd6f2dc4-0dc2-42ef-a195-49e31b912fd0
+  PACKAGE_VERSION                     = 0.1
+
+[Guids.common]
+  gTegra210PkgTokenSpaceGuid          = { 0xbd6f2dc4, 0x0dc2, 0x42ef, { 0xa1, 0x95, 0x49, 0xe3, 0x1b, 0x91, 0x2f, 0xd0 } }

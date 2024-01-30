@@ -1,5 +1,38 @@
 # Building
 
+*Recommended Linux OS: Ubuntu 22.04.3 LTS*
+*Or use the docker method*
+
+## If using docker method
+### Step 1:
+
+First of you need the sourcecode to compile a UEFI Image. <br />
+Clone the Repo by using:
+```
+git clone https://github.com/Robotix22/Mu-Tegra.git --recursive
+cd Mu-Tegra
+```
+
+You need to have `git` installed.
+
+### Step 2
+After the clone is done, proceed to open a shell/powershell/terminal inside the clone location
+For Linux/MacOS/BSD users, run:
+```
+./docker-build.sh "-d <Codename> [-r <Build Mode>]"
+```
+You need the "double quotes"
+
+For Windows users, run (not tested):
+```
+.\docker-build.cmd "-d <Codename> [-r <Build Mode>]"
+```
+You need the "double quotes".
+
+When then Build is done you will find a `.bin` File in the root of the repo.
+
+## If building natively
+
 ### Step 1:
 
 First of you need the sourcecode to compile a UEFI Image. <br />
@@ -29,8 +62,8 @@ When then Build is done you will find a `.bin` File in the root of the repo.
 ## Troubleshooting:
 
 ### Python Requirements:
-   1. You may encounter an issue That the recuired package is not satisfied or something, If your Python Version is lower than 3.10 install Python 3.10 or newer
-   2. After installing Python 3.10 Linux won't automaticly chose Python 3.10 as default, To set it as default use these commands:
+   1. You may encounter an issue That the required package is not satisfied or something, If your Python Version is lower than 3.10 install Python 3.10 or newer
+   2. After installing Python 3.10 Linux won't automatically chose Python 3.10 as default, To set it as default use these commands:
       ```
       sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
       sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1

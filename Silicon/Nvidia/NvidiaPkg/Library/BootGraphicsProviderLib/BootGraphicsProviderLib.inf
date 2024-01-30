@@ -38,8 +38,26 @@
   UefiBootServicesTableLib
 
 [Pcd]
-  gOemPkgTokenSpaceGuid.PcdLogoFile
-  gOemPkgTokenSpaceGuid.PcdLowBatteryFile
-  gOemPkgTokenSpaceGuid.PcdThermalFile
+  # Boot Logo Picture Sizes
+  gNvidiaPkgTokenSpaceGuid.PcdLogoFile_Small
+  gNvidiaPkgTokenSpaceGuid.PcdLogoFile_Medium
+  gNvidiaPkgTokenSpaceGuid.PcdLogoFile_Big
+
+  # Low Battery Picture Sizes
+  gNvidiaPkgTokenSpaceGuid.PcdLowBatteryFile_Small
+  gNvidiaPkgTokenSpaceGuid.PcdLowBatteryFile_Medium
+  gNvidiaPkgTokenSpaceGuid.PcdLowBatteryFile_Big
+
+  # Too Hot Picture Sizes
+  gNvidiaPkgTokenSpaceGuid.PcdThermalFile_Small
+  gNvidiaPkgTokenSpaceGuid.PcdThermalFile_Medium
+  gNvidiaPkgTokenSpaceGuid.PcdThermalFile_Big
+
+  # No Boot OS Picture Sizes
+  gNvidiaPkgTokenSpaceGuid.PcdNoBootOSFile_Small
+  gNvidiaPkgTokenSpaceGuid.PcdNoBootOSFile_Medium
+  gNvidiaPkgTokenSpaceGuid.PcdNoBootOSFile_Big
+
+  # Other PCDs
   gOemPkgTokenSpaceGuid.PcdPostBackgroundColor
-  gNvidiaPkgTokenSpaceGuid.PcdNoBootOSFile
+  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferWidth

@@ -38,6 +38,7 @@
 [FixedPcd]
   gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferWidth
   gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferHeight
+  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferColorDepth
 
 [Guids]
   gEfiMdeModulePkgTokenSpaceGuid

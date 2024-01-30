@@ -28,7 +28,7 @@
   DebugLib
   HobLib
   ArmMmuLib
-  PlatformMemoryMapLib
+  DeviceMemoryMapLib
 
 [Guids]
   gEfiMemoryTypeInformationGuid

@@ -6,71 +6,73 @@
 
   Copyright (C) Microsoft Corporation. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
-
 **/
 
 #include <Uefi.h>
 
-#include <Pi/PiFirmwareFile.h>
-
 #include <Library/PcdLib.h>
 #include <Library/DebugLib.h>
 #include <Library/BootGraphicsProviderLib.h>
-#include <Library/BootGraphicsProvider.h>
 #include <Library/BootGraphics.h>
 #include <Library/DxeServicesLib.h>
 
+#include <Pi/PiFirmwareFile.h>
+
 /**
   Get the requested boot graphic
-
 **/
 EFI_STATUS
 EFIAPI
 GetBootGraphic (
-  BOOT_GRAPHIC  Graphic,
-  OUT UINTN     *ImageSize,
-  OUT UINT8     **ImageData
-  )
+  BOOT_GRAPHIC Graphic,
+  OUT UINTN   *ImageSize,
+  OUT UINT8  **ImageData )
 {
   EFI_GUID  *g = NULL;
 
   switch (Graphic) {
     case BG_SYSTEM_LOGO:
-      g = PcdGetPtr (PcdLogoFile);
+      if (PcdGet32(PcdMipiFrameBufferWidth) <= 720) {
+        g = PcdGetPtr (PcdLogoFile_Small);
+      } else if (PcdGet32(PcdMipiFrameBufferWidth) >= 1800) {
+        g = PcdGetPtr (PcdLogoFile_Big);
+      } else {
+        g = PcdGetPtr (PcdLogoFile_Medium);
+      }
+
       break;
     case BG_CRITICAL_OVER_TEMP:
-      g = PcdGetPtr (PcdThermalFile);
+      if (PcdGet32(PcdMipiFrameBufferWidth) <= 720) {
+        g = PcdGetPtr (PcdThermalFile_Small);
+      } else if (PcdGet32(PcdMipiFrameBufferWidth) >= 1800) {
+        g = PcdGetPtr (PcdThermalFile_Big);
+      } else {
+        g = PcdGetPtr (PcdThermalFile_Medium);
+      }
+
       break;
     case BG_CRITICAL_LOW_BATTERY:
-      g = PcdGetPtr (PcdLowBatteryFile);
+      if (PcdGet32(PcdMipiFrameBufferWidth) <= 720) {
+        g = PcdGetPtr (PcdLowBatteryFile_Small);
+      } else if (PcdGet32(PcdMipiFrameBufferWidth) >= 1800) {
+        g = PcdGetPtr (PcdLowBatteryFile_Big);
+      } else {
+        g = PcdGetPtr (PcdLowBatteryFile_Medium);
+      }
+
       break;
-    default:
-      DEBUG ((DEBUG_ERROR, "Unsupported Boot Graphic Type 0x%X\n", Graphic));
-      return EFI_UNSUPPORTED;
-  }
-
-  //
-  // Get the specified image from FV.
-  //
-  return GetSectionFromAnyFv (g, EFI_SECTION_RAW, 0, (VOID **)ImageData, ImageSize);
-}
-
-EFI_STATUS
-EFIAPI
-GetPostBootGraphic (
-  BOOT_GRAPHIC  Graphic,
-  OUT UINTN     *ImageSize,
-  OUT UINT8     **ImageData
-  )
-{
-  EFI_GUID  *g = NULL;
-
-  switch (Graphic) {
     case BG_NO_BOOT_OS:
-      g = PcdGetPtr (PcdNoBootOSFile);
+      if (PcdGet32(PcdMipiFrameBufferWidth) <= 720) {
+        g = PcdGetPtr (PcdNoBootOSFile_Small);
+      } else if (PcdGet32(PcdMipiFrameBufferWidth) >= 1800) {
+        g = PcdGetPtr (PcdNoBootOSFile_Big);
+      } else {
+        g = PcdGetPtr (PcdNoBootOSFile_Medium);
+      }
+
       break;
     default:
-      DEBUG ((DEBUG_ERROR, "Unsupported Boot Graphic Type 0x%X\n", Graphic));
+      DEBUG ((EFI_D_ERROR, "%a: Unsupported Boot Graphic Type! 0x%x\n", __FUNCTION__, Graphic));
       return EFI_UNSUPPORTED;
   }
 
@@ -82,8 +84,4 @@ GetPostBootGraphic (
 
 UINT32
 EFIAPI
-GetBackgroundColor (
-  )
-{
-  return PcdGet32 (PcdPostBackgroundColor);
-}
+GetBackgroundColor () { return PcdGet32 (PcdPostBackgroundColor); }

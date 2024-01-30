@@ -44,8 +44,6 @@
 [Protocols]
   gEfiFirmwareVolume2ProtocolGuid
 
-[FeaturePcd]
-
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdBootManagerMenuFile
   gPcBdsPkgTokenSpaceGuid.PcdShellFile

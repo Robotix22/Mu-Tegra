@@ -27,5 +27,5 @@
 [Pcd]
   gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferWidth
   gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferHeight
-  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp
+  gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferColorDepth
   gNvidiaPkgTokenSpaceGuid.PcdMipiFrameBufferDelay
