@@ -1,0 +1,24 @@
+[Defines]
+  INF_VERSION                    = 0x0010005
+  BASE_NAME                      = TegraClockDxe
+  FILE_GUID                      = f97348df-3885-401d-9eed-f26cf6713afa
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = InitClocks
+
+[Sources]
+  TegraClockDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  NvidiaPkg/NvidiaPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  TegraClockLib
+  IoLib
+  UefiDriverEntryPoint
+  BaseLib
+
+[Depex]
+  TRUE

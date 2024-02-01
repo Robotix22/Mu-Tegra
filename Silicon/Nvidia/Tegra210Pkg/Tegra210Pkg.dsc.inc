@@ -41,6 +41,7 @@
   HwResetSystemLib|ArmPkg/Library/ArmSmcPsciResetSystemLib/ArmSmcPsciResetSystemLib.inf
   ResetSystemLib|ArmPkg/Library/ArmSmcPsciResetSystemLib/ArmSmcPsciResetSystemLib.inf
   SoCPlatformLib|Tegra210Pkg/Library/SoCPlatformLib/SoCPlatformLib.inf
+  TegraClockLib|Tegra210Pkg/GPLLibrary/TegraClockLib/TegraClockLib.inf
 
 [Components.common]
   Tegra210Pkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf

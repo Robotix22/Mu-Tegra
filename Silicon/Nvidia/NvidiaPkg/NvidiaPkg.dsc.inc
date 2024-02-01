@@ -389,7 +389,9 @@
   # Graphics Driver
   NvidiaPkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
 
+  NvidiaPkg/GPLDrivers/TegraClockDxe/TegraClockDxe.inf
   NvidiaPkg/GPLDrivers/TegraGpioDxe/TegraGpioDxe.inf
+
   NvidiaPkg/Drivers/GpioButtons/GpioButtons.inf
 
 !include NvidiaPkg/Frontpage.dsc.inc

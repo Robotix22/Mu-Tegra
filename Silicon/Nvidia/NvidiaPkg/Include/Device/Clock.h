@@ -1,12 +1,61 @@
 /** @file
   Copyright (c) 2011 The Chromium OS Authors.
-  Copyright (C) 2010-2014 NVIDIA Corporation <www.nvidia.com>
+  Copyright (C) 2010-2015 NVIDIA Corporation <www.nvidia.com>
 
   SPDX-License-Identifier: GPL-2.0+
 **/
 
 #ifndef _CLOCK_H_
 #define _CLOCK_H_
+
+// TODO: Move this to a Library
+// The PLLs Supported by the Hardware
+enum ClockID {
+  CLOCK_ID_FIRST,
+  CLOCK_ID_CGENERAL = CLOCK_ID_FIRST,
+  CLOCK_ID_MEMORY,
+  CLOCK_ID_PERIPH,
+  CLOCK_ID_AUDIO,
+  CLOCK_ID_USB,
+  CLOCK_ID_DISPLAY,
+
+  // Now the Simple ones
+  CLOCK_ID_FIRST_SIMPLE,
+  CLOCK_ID_XCPU     = CLOCK_ID_FIRST_SIMPLE,
+  CLOCK_ID_EPCI,
+  CLOCK_ID_SFROM32KHZ,
+  CLOCK_ID_DP,
+
+  // These are the Base Clocks (Inputs to the Tegra SoC)
+  CLOCK_ID_32KHZ,
+  CLOCK_ID_OSC,
+  CLOCK_ID_CLK_M,
+
+  CLOCK_ID_COUNT,  // Number of PLLs
+
+  //
+  // These are Clock IDs that are used in Table clock_source[][]
+  // but will not be assigned as a Clock Source for any Peripheral.
+  //
+  CLOCK_ID_DISPLAY2,
+  CLOCK_ID_CGENERAL_0,
+  CLOCK_ID_CGENERAL_1,
+  CLOCK_ID_CGENERAL2,
+  CLOCK_ID_CGENERAL3,
+  CLOCK_ID_CGENERAL4_0,
+  CLOCK_ID_CGENERAL4_1,
+  CLOCK_ID_CGENERAL4_2,
+  CLOCK_ID_MEMORY2,
+  CLOCK_ID_SRC2,
+
+  CLOCK_ID_NONE = -1,
+};
+
+// Return 1 if a PLL ID is in Range
+#define clock_id_is_pll(id) ((id) >= CLOCK_ID_FIRST && (id) < CLOCK_ID_COUNT)
+
+// Number of PLL-Based Clocks (i.e. not OSC, MCLK or 32KHz)
+#define CLOCK_ID_PLL_COUNT (CLOCK_ID_COUNT - 3)
 
 // PLL Registers - There are several PLLs in the Clock Controller
 typedef struct clk_pll {
@@ -20,6 +69,23 @@ typedef struct clk_pll_simple {
   UINT32 PllBase;                                                 // The Control Register
   UINT32 PllMisc;                                                 // Other Misc Things
 } SimpleClockPll;
+
+typedef struct clk_pll_info {
+  UINT32 m_shift:5;                                               // DIVM_SHIFT
+  UINT32 n_shift:5;                                               // DIVN_SHIFT
+  UINT32 p_shift:5;                                               // DIVP_SHIFT
+  UINT32 kcp_shift:5;                                             // KCP/cpcon SHIFT
+  UINT32 kvco_shift:5;                                            // KVCO/lfcon SHIFT
+  UINT32 lock_ena:6;                                              // LOCK_ENABLE/EN_LOCKDET Shift
+  UINT32 rsvd:1;
+  UINT32 m_mask:10;                                               // DIVM_MASK
+  UINT32 n_mask:12;                                               // DIVN_MASK
+  UINT32 p_mask:10;                                               // DIVP_MASK or VCO_MASK
+  UINT32 kcp_mask:10;                                             // KCP/CPCON MASK
+  UINT32 kvco_mask:10;                                            // KVCO/LFCON MASK
+  UINT32 lock_det:6;                                              // LOCK_DETECT/LOCKED Shift */
+  UINT32 rsvd2:6;
+} ClockPllInfo;
 
 // RST_DEV_(L,H,U,V,W)_(SET,CLR) and CLK_ENB_(L,H,U,V,W)_(SET,CLR)
 typedef struct clk_set_clr {

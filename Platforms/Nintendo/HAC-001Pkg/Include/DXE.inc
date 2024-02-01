@@ -28,5 +28,6 @@
   INF NvidiaPkg/Drivers/KeypadDxe/KeypadDxe.inf
 
   INF NvidiaPkg/GPLDrivers/TegraGpioDxe/TegraGpioDxe.inf
+  INF NvidiaPkg/GPLDrivers/TegraClockDxe/TegraClockDxe.inf
 
   INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
